@@ -1,11 +1,8 @@
 const express = require('express');
+const { helloWorldController } = require('../controllers');
 const router = express.Router();
 
 // Routes go here
-router.get("/test", (req, res) => {
-    res.json({
-        message: "Hello World"
-    });
-});
+router.get("/test", helloWorldController.helloWorld);
 
 module.exports = router;
