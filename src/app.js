@@ -3,16 +3,12 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const { datBaseConnection } = require('./utils/database');
 const morgan = require('morgan');
 const router = require('./routes');
 
 // Database connection
-mongoose.connect(process.env.DB_CONNECTION).then(() => {
-    console.log('Connected to database');
-}).catch(err => {
-    console.log('Error connecting to database: ', err);
-});
+datBaseConnection();
 
 // Middlewares
 app.use(bodyParser.json());
