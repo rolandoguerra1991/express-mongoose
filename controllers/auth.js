@@ -82,7 +82,7 @@ const sendResetPasswordEmail = async (request, response) => {
 const resetPassword = async (request, response) => {
   const { password, email } = request.body;
   const hashedPassword = await bcrypt.hash(password, 10);
-  const user = await User.updateOne({ email }, { password: hashedPassword, passwordResetToken: null }).exec();
+  await User.updateOne({ email }, { password: hashedPassword, passwordResetToken: null }).exec();
   response.json({
     message: 'Reset password',
   });
