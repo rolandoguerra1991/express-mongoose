@@ -1,6 +1,8 @@
 const User = require('../database/models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const { transportSettings } = require('../config');
 
 const login = async (request, response) => {
   const { email, password } = request.body;
@@ -49,7 +51,28 @@ const logout = async (request, response) => {
     response.status(500).json({ message: error.message });
   }
 };
-const sendResetPasswordEmail = async (request, response) => {};
+const sendResetPasswordEmail = async (request, response) => {
+  const { email } = request.body;
+  transport = nodemailer.createTransport(transportSettings);
+  const emailData = {
+    from: "",
+    to: email,
+    subject: 'Reset Password',
+    text: 'Reset Password',
+    html: '<h1>Reset Password</h1>',
+  };
+  transport.sendMail(emailData,
+    (err, info) => {
+      if (err) {
+        return response.status(500).json({ message: err.message });
+      }
+      response.json({
+        info,
+        message: 'Email sent successfully',
+      });
+    }
+  );
+};
 const resetPassword = async (request, response) => {};
 const sendVerificationEmail = async (request, response) => {};
 const verifyEmail = async (request, response) => {};
