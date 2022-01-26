@@ -53,27 +53,40 @@ const logout = async (request, response) => {
 };
 const sendResetPasswordEmail = async (request, response) => {
   const { email } = request.body;
+  const passwordResetToken = jwt.sign({ email }, process.env.JWT_SECRET);
+  const user = await User.updateOne({
+    email,
+    passwordResetToken,
+  }).exec();
   transport = nodemailer.createTransport(transportSettings);
   const emailData = {
-    from: "",
+    from: '',
     to: email,
     subject: 'Reset Password',
     text: 'Reset Password',
-    html: '<h1>Reset Password</h1>',
+    html:
+      '<h1>Reset Password</h1></br><a href="http://localhost:3000/reset-password?token=' +
+      passwordResetToken +
+      '">Reset Password</a>',
   };
-  transport.sendMail(emailData,
-    (err, info) => {
-      if (err) {
-        return response.status(500).json({ message: err.message });
-      }
-      response.json({
-        info,
-        message: 'Email sent successfully',
-      });
+  transport.sendMail(emailData, (err, info) => {
+    if (err) {
+      return response.status(500).json({ message: err.message });
     }
-  );
+    response.json({
+      info,
+      message: 'Email sent successfully',
+    });
+  });
 };
-const resetPassword = async (request, response) => {};
+const resetPassword = async (request, response) => {
+  const { password, email } = request.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await User.updateOne({ email }, { password: hashedPassword, passwordResetToken: null }).exec();
+  response.json({
+    message: 'Reset password',
+  });
+};
 const sendVerificationEmail = async (request, response) => {};
 const verifyEmail = async (request, response) => {};
 
