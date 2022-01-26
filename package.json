@@ -2,9 +2,9 @@
   "name": "express-mongoose",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "nodemon ./src/app.js"
+    "dev": "cross-env NODE_ENV=development nodemon src/index.js"
   },
   "keywords": [],
   "author": "Rolando Guerra",
@@ -17,5 +17,8 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

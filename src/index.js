@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
 
 const express = require('express');
 const app = express();
@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 const { datBaseConnection } = require('./utils/database');
 const morgan = require('morgan');
 const router = require('./routes');
-
 // Database connection
 datBaseConnection();
 
