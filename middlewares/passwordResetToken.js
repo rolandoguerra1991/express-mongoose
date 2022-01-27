@@ -2,11 +2,11 @@ const jwt = require('jsonwebtoken');
 const User = require('../database/models/user');
 
 const passwordResetToken = async (request, response, next) => {
-  const passwordResetTokenHeader = request.headers.passwordresettoken;
+  const authorization = request.headers.authorization;
   const accessTokenSecret = process.env.JWT_SECRET;
 
-  if (passwordResetTokenHeader) {
-    const token = passwordResetTokenHeader.split(' ')[1];
+  if (authorization) {
+    const token = authorization.split(' ')[1];
     const verifyToken = await User.findOne({ passwordResetToken: token }).exec();
 
     if (!verifyToken) {

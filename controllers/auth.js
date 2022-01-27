@@ -54,7 +54,7 @@ const logout = async (request, response) => {
 const sendResetPasswordEmail = async (request, response) => {
   const { email } = request.body;
   const passwordResetToken = jwt.sign({ email }, process.env.JWT_SECRET);
-  const user = await User.updateOne({
+  await User.updateOne({
     email,
     passwordResetToken,
   }).exec();
@@ -87,8 +87,38 @@ const resetPassword = async (request, response) => {
     message: 'Reset password',
   });
 };
-const sendVerificationEmail = async (request, response) => {};
-const verifyEmail = async (request, response) => {};
+const sendVerificationEmail = async (request, response) => {
+  const { email } = request.body;
+  const emailVerificationToken = jwt.sign({ email }, process.env.JWT_SECRET);
+  await User.updateOne({
+    email,
+    emailVerificationToken,
+  }).exec();
+  transport = nodemailer.createTransport(transportSettings);
+  const emailData = {
+    from: '',
+    to: email,
+    subject: 'Email Verification',
+    text: 'Email Verification',
+    html: '<h1>Email Verification</h1></br><a href="http://localhost:3000/verify-email?token=' + emailVerificationToken + '">Verify Email</a>',
+  };
+  transport.sendMail(emailData, (err, info) => {
+    if (err) {
+      return response.status(500).json({ message: err.message });
+    }
+    response.json({
+      info,
+      message: 'Email sent successfully',
+    });
+  });
+};
+const verifyEmail = async (request, response) => {
+  const { email } = request.body;
+  await User.updateOne({ email }, { emailVerificationToken: null, emailVerified: true }).exec();
+  response.json({
+    message: 'Email verified',
+  });
+};
 
 module.exports = {
   login,
