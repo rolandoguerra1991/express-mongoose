@@ -1,13 +1,13 @@
 const jwt = require('jsonwebtoken');
-const User = require('../database/models/user');
+const userService = require('../services/user.service');
 
-const authenticated = async (request, response, next) => {
+const verifyEmailToken = async (request, response, next) => {
   const authorization = request.headers.authorization;
   const accessTokenSecret = process.env.JWT_SECRET;
 
   if (authorization) {
     const token = authorization.split(' ')[1];
-    const verifyToken = await User.findOne({ token: token }).exec();
+    const verifyToken = await userService.findUserByField('emailVerificationToken', token);
 
     if (!verifyToken) {
       return response.status(401).json({ message: 'Invalid token' });
@@ -24,4 +24,4 @@ const authenticated = async (request, response, next) => {
   }
 };
 
-module.exports = authenticated;
+module.exports = verifyEmailToken;

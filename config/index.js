@@ -1,3 +1,3 @@
-const transportSettings = require('./mails');
+const transportSettings = require('./mails.config');
 
 module.exports = { transportSettings };

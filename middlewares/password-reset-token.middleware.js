@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../database/models/user');
+const userService = require('../services/user.service');
 
 const passwordResetToken = async (request, response, next) => {
   const authorization = request.headers.authorization;
@@ -7,7 +7,7 @@ const passwordResetToken = async (request, response, next) => {
 
   if (authorization) {
     const token = authorization.split(' ')[1];
-    const verifyToken = await User.findOne({ passwordResetToken: token }).exec();
+    const verifyToken = await userService.findUserByField('passwordResetToken', token);
 
     if (!verifyToken) {
       return response.status(401).json({ message: 'Invalid token' });
