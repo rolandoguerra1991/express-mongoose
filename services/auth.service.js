@@ -5,36 +5,55 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const autenticate = async (payload) => {
-  const { email, password } = payload;
-  const user = await userService.findUserByField('email', email);
-  await validateUserPassword(password, user);
-  const token = await generateToken(user);
-  await userService.updateUserByField('_id', user._id, { token });
+  try {
+    const { email, password } = payload;
+    const user = await userService.findUserByField('email', email);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    await validateUserPassword(password, user);
+    const token = await generateToken(user);
+    await userService.updateUserByField('_id', user._id, { token });
 
-  output = {
-    user,
-    token,
-  };
+    output = {
+      user,
+      token,
+    };
 
-  return output;
+    return output;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 const register = async (payload) => {
-  const user = await userService.createUser(payload);
-  return user;
+  try {
+    const user = await userService.createUser(payload);
+    return user;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 const validateUserPassword = async (password, user) => {
-  const isValid = await bcrypt.compare(password, user.password);
-  if (!isValid) {
-    throw new Error('Invalid password');
+  try {
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      throw new Error('Invalid password');
+    }
+    return isValid;
+  } catch (error) {
+    throw new Error(error);
   }
-  return isValid;
 };
 
 const generateToken = async (user) => {
-  const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-  return token;
+  try {
+    const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    return token;
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 const logout = async (id) => {
@@ -103,9 +122,13 @@ const verifyEmail = async (payload) => {
 };
 
 const isVerified = async (email) => {
-  const user = await userService.findUserByField('email', email);
-  return user.emailVerified;
-}
+  try {
+    const user = await userService.findUserByField('email', email);
+    return user.emailVerified;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
 module.exports = {
   autenticate,

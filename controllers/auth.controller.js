@@ -1,6 +1,7 @@
 const { authService } = require('../services');
+const catchValidations = require('../utils/catchValidations');
 
-const login = async (request, response) => {
+const login = catchValidations(async (request, response) => {
   try {
     const { user, token } = await authService.autenticate(request.body);
     response.json({
@@ -11,9 +12,9 @@ const login = async (request, response) => {
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
-};
+});
 
-const register = async (request, response) => {
+const register = catchValidations(async (request, response) => {
   try {
     const user = await authService.register(request.body);
     response.json({
@@ -23,9 +24,9 @@ const register = async (request, response) => {
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
-};
+});
 
-const logout = async (request, response) => {
+const logout = catchValidations(async (request, response) => {
   try {
     const { user } = request;
     await authService.logout(user.id);
@@ -35,9 +36,9 @@ const logout = async (request, response) => {
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
-};
+});
 
-const sendResetPasswordEmail = async (request, response) => {
+const sendResetPasswordEmail = catchValidations(async (request, response) => {
   try {
     const { email } = request.body;
     await authService.sendResetPasswordEmail(email);
@@ -47,9 +48,9 @@ const sendResetPasswordEmail = async (request, response) => {
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
-};
+});
 
-const resetPassword = async (request, response) => {
+const resetPassword = catchValidations(async (request, response) => {
   try {
     await authService.resetPassword(request.body);
     response.json({
@@ -58,9 +59,9 @@ const resetPassword = async (request, response) => {
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
-};
+});
 
-const sendVerificationEmail = async (request, response) => {
+const sendVerificationEmail = catchValidations(async (request, response) => {
   try {
     await authService.sendVerificationEmail(request.body);
     response.json({
@@ -69,9 +70,9 @@ const sendVerificationEmail = async (request, response) => {
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
-};
+});
 
-const verifyEmail = async (request, response) => {
+const verifyEmail = catchValidations(async (request, response) => {
   try {
     await authService.verifyEmail(request.body);
     response.json({
@@ -80,7 +81,7 @@ const verifyEmail = async (request, response) => {
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
-};
+});
 
 module.exports = {
   login,
