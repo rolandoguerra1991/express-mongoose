@@ -2,11 +2,11 @@ const { authService } = require('../services');
 
 const login = async (request, response) => {
   try {
-    const { user, token} = await authService.autenticate(request.body);
+    const { user, token } = await authService.autenticate(request.body);
     response.json({
       message: 'User logged in successfully',
       user,
-      token
+      token,
     });
   } catch (error) {
     response.status(500).json({ message: error.message });
@@ -28,7 +28,7 @@ const register = async (request, response) => {
 const logout = async (request, response) => {
   try {
     const { user } = request;
-    await User.findByIdAndUpdate(user.id, { token: null }).exec();
+    await authService.logout(user.id);
     response.json({
       message: 'User logged out successfully',
     });
@@ -38,41 +38,26 @@ const logout = async (request, response) => {
 };
 
 const sendResetPasswordEmail = async (request, response) => {
-  const { email } = request.body;
-  const passwordResetToken = jwt.sign({ email }, process.env.JWT_SECRET);
-  await User.updateOne({
-    email,
-    passwordResetToken,
-  }).exec();
-  transport = nodemailer.createTransport(transportSettings);
-  const emailData = {
-    from: '',
-    to: email,
-    subject: 'Reset Password',
-    text: 'Reset Password',
-    html:
-      '<h1>Reset Password</h1></br><a href="http://localhost:3000/reset-password?token=' +
-      passwordResetToken +
-      '">Reset Password</a>',
-  };
-  transport.sendMail(emailData, (err, info) => {
-    if (err) {
-      return response.status(500).json({ message: err.message });
-    }
+  try {
+    const { email } = request.body;
+    await authService.sendResetPasswordEmail(email);
     response.json({
-      info,
-      message: 'Email sent successfully',
+      message: 'Reset password email sent successfully',
     });
-  });
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
 };
 
 const resetPassword = async (request, response) => {
-  const { password, email } = request.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  await User.updateOne({ email }, { password: hashedPassword, passwordResetToken: null }).exec();
-  response.json({
-    message: 'Reset password',
-  });
+  try {
+    await authService.resetPassword(request.body);
+    response.json({
+      message: 'Reset password',
+    });
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
 };
 
 const sendVerificationEmail = async (request, response) => {

@@ -11,6 +11,4 @@ const datBaseConnection = () => {
     });
 };
 
-module.exports = {
-  datBaseConnection,
-};
+module.exports = datBaseConnection;

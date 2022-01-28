@@ -44,8 +44,28 @@ const generateHashedPassword = async (password) => {
     throw new Error(error);
   }
 };
+
+const removeToken = async (id) => {
+  try {
+    await User.findByIdAndUpdate(id, { token: null }).exec();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+const changePassword = async (field, value, password) => {
+  try {
+    const hashedPassword = await generateHashedPassword(password);
+    await updateUserByField(field, value, { password: hashedPassword });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 module.exports = {
   createUser,
   findUserByField,
   updateUserByField,
+  removeToken,
+  changePassword,
 };
