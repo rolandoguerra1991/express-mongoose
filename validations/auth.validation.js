@@ -1,5 +1,6 @@
-const { body, header } = require('express-validator');
-const userService = require('../services/user.service');
+const { body } = require('express-validator');
+
+const { emailIsTaken } = require('./custom.validation');
 
 const loginValidation = [
   body('email').isEmail().withMessage('Email is invalid').notEmpty().withMessage('Email is required'),
@@ -17,13 +18,12 @@ const registerValidation = [
     .notEmpty()
     .withMessage('Password is required'),
   body('name').notEmpty().withMessage('Name is required'),
-  body('email').isEmail().withMessage('Email is invalid').notEmpty().withMessage('Email is required').custom(async (value) => {
-    const user = await userService.findUserByField('email', value);
-    if (user) {
-      throw new Error('Email already exists');
-    }
-    return true;
-  })
+  body('email')
+    .isEmail()
+    .withMessage('Email is invalid')
+    .notEmpty()
+    .withMessage('Email is required')
+    .custom((email) => emailIsTaken(email)),
 ];
 
 const resetPasswordValidation = [

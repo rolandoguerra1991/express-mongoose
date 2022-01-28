@@ -52,7 +52,9 @@ const sendResetPasswordEmail = catchValidations(async (request, response) => {
 
 const resetPassword = catchValidations(async (request, response) => {
   try {
-    await authService.resetPassword(request.body);
+    const { password } = request.body;
+    const { authorization } = request.headers;
+    await authService.resetPassword({ password, passwordResetToken: authorization.split(' ')[1] });
     response.json({
       message: 'Reset password',
     });

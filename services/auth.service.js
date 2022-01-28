@@ -83,8 +83,8 @@ const sendResetPasswordEmail = async (email) => {
 
 const resetPassword = async (payload) => {
   try {
-    const { email, password } = payload;
-    await userService.changePassword('email', email, password);
+    const { password, passwordResetToken } = payload;
+    await userService.changePassword('passwordResetToken', passwordResetToken, password);
   } catch (error) {
     throw new Error(error);
   }
