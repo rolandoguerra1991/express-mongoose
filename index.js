@@ -1,11 +1,14 @@
+// Import modules
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
-
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
 const datBaseConnection = require('./utils/database');
 const morgan = require('morgan');
 const router = require('./routes');
+
+// Initialize the app
+const app = express();
+
 // Database connection
 datBaseConnection();
 
