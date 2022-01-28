@@ -8,7 +8,6 @@ const verifyEmailToken = async (request, response, next) => {
   if (authorization) {
     const token = authorization.split(' ')[1];
     const verifyToken = await userService.findUserByField('emailVerificationToken', token);
-
     if (!verifyToken) {
       return response.status(401).json({ message: 'Invalid token' });
     }

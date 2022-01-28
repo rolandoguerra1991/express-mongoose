@@ -69,6 +69,42 @@ const resetPassword = async (payload) => {
   } catch (error) {
     throw new Error(error);
   }
+};
+
+const sendVerificationEmail = async (payload) => {
+  try {
+    const { email } = payload;
+    if (await isVerified(email)) {
+      throw new Error('Email already verified');
+    }
+    const emailVerificationToken = jwt.sign({ email }, process.env.JWT_SECRET);
+    await userService.updateUserByField('email', email, { emailVerificationToken });
+    const emailData = {
+      from: process.env.MAIL_FROM_ADDRESS,
+      to: email,
+      subject: 'Email Verification',
+      text: 'Email Verification',
+      html: `<a href="${process.env.FRONTEND_URL}/verify-email/${emailVerificationToken}">Verify Email</a>`,
+    };
+    await sendEmail(emailData);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+const verifyEmail = async (payload) => {
+  const { email } = payload;
+  try {
+    await userService.findUserByField('email', email);
+    await userService.updateUserByField('email', email, { emailVerificationToken: null, emailVerified: true });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+const isVerified = async (email) => {
+  const user = await userService.findUserByField('email', email);
+  return user.emailVerified;
 }
 
 module.exports = {
@@ -77,4 +113,6 @@ module.exports = {
   logout,
   sendResetPasswordEmail,
   resetPassword,
+  sendVerificationEmail,
+  verifyEmail,
 };

@@ -15,9 +15,6 @@ const createUser = async (payload) => {
 const findUserByField = async (field, value) => {
   try {
     const user = await User.findOne({ [field]: value }).exec();
-    if (!user) {
-      throw new Error('User not found');
-    }
     return user;
   } catch (error) {
     throw error;
@@ -27,9 +24,6 @@ const findUserByField = async (field, value) => {
 const updateUserByField = async (field, value, payload) => {
   try {
     const user = await User.updateOne({ [field]: value }, payload).exec();
-    if (!user) {
-      throw new Error('User not found');
-    }
     return user;
   } catch (error) {
     throw error;
@@ -56,7 +50,7 @@ const removeToken = async (id) => {
 const changePassword = async (field, value, password) => {
   try {
     const hashedPassword = await generateHashedPassword(password);
-    await updateUserByField(field, value, { password: hashedPassword });
+    await updateUserByField(field, value, { password: hashedPassword, passwordResetToken: null });
   } catch (error) {
     throw new Error(error);
   }
