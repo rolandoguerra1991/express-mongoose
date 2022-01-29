@@ -7,7 +7,7 @@ const authenticated = async (request, response, next) => {
 
   if (authorization) {
     const token = authorization.split(' ')[1];
-    const verifyToken = await userService.findUserByField('token', token);
+    const verifyToken = await userService.findUser({ token });
 
     if (!verifyToken) {
       return response.status(401).json({ message: 'Invalid token' });

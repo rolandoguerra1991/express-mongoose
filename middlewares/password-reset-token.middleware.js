@@ -7,7 +7,7 @@ const passwordResetToken = async (request, response, next) => {
 
   if (authorization) {
     const token = authorization.split(' ')[1];
-    const verifyToken = await userService.findUserByField('passwordResetToken', token);
+    const verifyToken = await userService.updateUser({ passwordResetToken: token });
 
     if (!verifyToken) {
       return response.status(401).json({ message: 'Invalid token' });

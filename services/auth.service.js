@@ -7,13 +7,13 @@ const bcrypt = require('bcrypt');
 const autenticate = async (payload) => {
   try {
     const { email, password } = payload;
-    const user = await userService.findUserByField('email', email);
+    const user = await userService.findUser({ email });
     if (!user) {
       throw new Error('User not found');
     }
     await validateUserPassword(password, user);
     const token = await generateToken(user);
-    await userService.updateUserByField('_id', user._id, { token });
+    await userService.updateUser({ _id: user._id }, { token });
 
     output = {
       user,
@@ -31,7 +31,7 @@ const register = async (payload) => {
     const user = await userService.createUser(payload);
     return user;
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
@@ -39,11 +39,11 @@ const validateUserPassword = async (password, user) => {
   try {
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
-      throw new Error('Invalid password');
+      throw 'Invalid password';
     }
     return isValid;
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
@@ -52,7 +52,7 @@ const generateToken = async (user) => {
     const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     return token;
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
@@ -60,14 +60,14 @@ const logout = async (id) => {
   try {
     await userService.removeToken(id);
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
 const sendResetPasswordEmail = async (email) => {
   try {
     const passwordResetToken = jwt.sign({ email }, process.env.JWT_SECRET);
-    await userService.updateUserByField('email', email, { passwordResetToken });
+    await userService.updateUser({ email }, { passwordResetToken });
     const emailData = {
       from: process.env.MAIL_FROM_ADDRESS,
       to: email,
@@ -77,16 +77,16 @@ const sendResetPasswordEmail = async (email) => {
     };
     await sendEmail(emailData);
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
 const resetPassword = async (payload) => {
   try {
     const { password, passwordResetToken } = payload;
-    await userService.changePassword('passwordResetToken', passwordResetToken, password);
+    await userService.changePassword({ passwordResetToken }, password);
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
@@ -94,10 +94,10 @@ const sendVerificationEmail = async (payload) => {
   try {
     const { email } = payload;
     if (await isVerified(email)) {
-      throw new Error('Email already verified');
+      throw 'Email already verified';
     }
     const emailVerificationToken = jwt.sign({ email }, process.env.JWT_SECRET);
-    await userService.updateUserByField('email', email, { emailVerificationToken });
+    await userService.updateUser({ email }, { emailVerificationToken });
     const emailData = {
       from: process.env.MAIL_FROM_ADDRESS,
       to: email,
@@ -107,26 +107,25 @@ const sendVerificationEmail = async (payload) => {
     };
     await sendEmail(emailData);
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
 const verifyEmail = async (payload) => {
   const { email } = payload;
   try {
-    await userService.findUserByField('email', email);
-    await userService.updateUserByField('email', email, { emailVerificationToken: null, emailVerified: true });
+    await userService.updateUser({ email }, { emailVerificationToken: null, emailVerified: true });
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
 const isVerified = async (email) => {
   try {
-    const user = await userService.findUserByField('email', email);
+    const user = await userService.findUser({ email });
     return user.emailVerified;
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
