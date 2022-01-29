@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const datBaseConnection = require('./utils/database');
 const morgan = require('morgan');
+const cors = require('cors');
 const router = require('./routes');
 
 // Initialize the app
@@ -15,6 +16,7 @@ datBaseConnection();
 // Middlewares
 app.use(bodyParser.json());
 app.use(morgan('dev'));
+app.use(cors({ origin: process.env.CORS_ORIGIN }));
 
 // Routes
 app.use('/api/v1/', router);
