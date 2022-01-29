@@ -15,9 +15,6 @@ const createUser = async (payload) => {
 const findUser = async (query) => {
   try {
     const user = await User.findOne(query).exec();
-    if (!user) {
-      throw 'User not found';
-    }
     return user;
   } catch (error) {
     throw error;
@@ -88,9 +85,6 @@ const deleteUser = async (payload) => {
 const findUserById = async (id) => {
   try {
     const user = await User.findById(id).exec();
-    if (!user) {
-      throw 'User not found';
-    }
     return user;
   } catch (error) {
     throw error;
