@@ -1,9 +1,7 @@
-const jwt = require('jsonwebtoken');
-const userService = require('../services/user.service');
+const { userService, tokenService } = require('../services');
 
 const authenticated = async (request, response, next) => {
   const authorization = request.headers.authorization;
-  const accessTokenSecret = process.env.JWT_SECRET;
 
   if (authorization) {
     const token = authorization.split(' ')[1];
@@ -12,7 +10,7 @@ const authenticated = async (request, response, next) => {
     if (!verifyToken) {
       return response.status(401).json({ message: 'Invalid token' });
     }
-    jwt.verify(token, accessTokenSecret, (err, user) => {
+    await tokenService.veryfyToken(token, (err, user) => {
       if (err) {
         return response.status(403).json({ message: err });
       }

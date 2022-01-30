@@ -10,4 +10,10 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-module.exports = upload;
+const uploadSingle = (name) => upload.single(name);
+const uploadArray = (name, maxCount) => upload.array(name, maxCount);
+
+module.exports = {
+  uploadSingle,
+  uploadArray,
+};

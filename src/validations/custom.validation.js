@@ -3,7 +3,7 @@ const userService = require('../services/user.service');
 const emailIsTaken = async (email) => {
   const user = await userService.findUser({ email });
   if (user) {
-    throw new Error('Email already exists');
+    throw 'Email already exists';
   }
   return true;
 };

@@ -1,18 +1,13 @@
-const userService = require('./user.service');
-const sendEmail = require('./emails.service');
+const { userService, tokenService, emailsService } = require('./');
 
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const autenticate = async (payload) => {
   try {
     const { email, password } = payload;
-    const user = await userService.findUser({ email });
-    if (!user) {
-      throw 'User not found';
-    }
+    const user = await verifyIfExistUser(email);
     await validateUserPassword(password, user);
-    const token = await generateToken(user);
+    const token = await tokenService.generateToken({ user });
     await userService.updateUser({ _id: user._id }, { token });
 
     output = {
@@ -47,15 +42,6 @@ const validateUserPassword = async (password, user) => {
   }
 };
 
-const generateToken = async (user) => {
-  try {
-    const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    return token;
-  } catch (error) {
-    throw error;
-  }
-};
-
 const logout = async (id) => {
   try {
     await userService.removeToken(id);
@@ -66,16 +52,9 @@ const logout = async (id) => {
 
 const sendResetPasswordEmail = async (email) => {
   try {
-    const passwordResetToken = jwt.sign({ email }, process.env.JWT_SECRET);
+    const passwordResetToken = tokenService.generateToken({ email });
     await userService.updateUser({ email }, { passwordResetToken });
-    const emailData = {
-      from: process.env.MAIL_FROM_ADDRESS,
-      to: email,
-      subject: 'Reset Password',
-      text: '',
-      html: `<a href="${process.env.FRONTEND_URL}/reset-password/${passwordResetToken}">Reset Password</a>`,
-    };
-    await sendEmail(emailData);
+    await emailsService.sendResetPasswordEmail();
   } catch (error) {
     throw error;
   }
@@ -96,16 +75,9 @@ const sendVerificationEmail = async (payload) => {
     if (await isVerified(email)) {
       throw 'Email already verified';
     }
-    const emailVerificationToken = jwt.sign({ email }, process.env.JWT_SECRET);
+    const emailVerificationToken = tokenService.generateToken({ email });
     await userService.updateUser({ email }, { emailVerificationToken });
-    const emailData = {
-      from: process.env.MAIL_FROM_ADDRESS,
-      to: email,
-      subject: 'Email Verification',
-      text: 'Email Verification',
-      html: `<a href="${process.env.FRONTEND_URL}/verify-email/${emailVerificationToken}">Verify Email</a>`,
-    };
-    await sendEmail(emailData);
+    await emailsService.sendVerificationEmail();
   } catch (error) {
     throw error;
   }
@@ -127,6 +99,14 @@ const isVerified = async (email) => {
   } catch (error) {
     throw error;
   }
+};
+
+const verifyIfExistUser = async (email) => {
+  const user = await userService.findUser({ email });
+  if (!user) {
+    throw 'User not found';
+  }
+  return user;
 };
 
 module.exports = {
