@@ -1,5 +1,5 @@
 const userService = require('./user.service');
-const sendEmail = require('../utils/emails');
+const sendEmail = require('./emails.service');
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -9,7 +9,7 @@ const autenticate = async (payload) => {
     const { email, password } = payload;
     const user = await userService.findUser({ email });
     if (!user) {
-      throw new Error('User not found');
+      throw 'User not found';
     }
     await validateUserPassword(password, user);
     const token = await generateToken(user);
@@ -22,7 +22,7 @@ const autenticate = async (payload) => {
 
     return output;
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 

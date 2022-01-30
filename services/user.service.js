@@ -80,7 +80,7 @@ const deleteUser = async (payload) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
 const findUserById = async (id) => {
   try {
@@ -89,7 +89,7 @@ const findUserById = async (id) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
 module.exports = {
   createUser,
@@ -99,5 +99,5 @@ module.exports = {
   changePassword,
   query,
   deleteUser,
-  findUserById
+  findUserById,
 };
