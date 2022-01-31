@@ -4,16 +4,16 @@ const authenticated = async (request, response, next) => {
   const authorization = request.headers.authorization;
   if (authorization) {
     const token = authorization.split(' ')[1];
-    const verifyToken = await userService.findUser({ token });
+    const user = await userService.findUser({ token });
 
-    if (!verifyToken) {
+    if (!user) {
       return response.status(401).json({ message: 'Invalid token' });
     }
-    await tokenService.veryfyToken(token, (err, token) => {
+    await tokenService.veryfyToken(token, (err, user) => {
       if (err) {
         return response.status(403).json({ message: err });
       }
-      request.headers.authorization = token
+      request.userId = user.id;
       next();
     });
   } else {

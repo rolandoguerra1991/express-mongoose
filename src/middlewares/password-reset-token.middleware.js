@@ -5,15 +5,16 @@ const passwordResetToken = async (request, response, next) => {
 
   if (authorization) {
     const token = authorization.split(' ')[1];
-    const verifyToken = await userService.updateUser({ passwordResetToken: token });
+    const user = await userService.updateUser({ passwordResetToken: token });
 
-    if (!verifyToken) {
+    if (!user) {
       return response.status(401).json({ message: 'Invalid token' });
     }
-    await tokenService.veryfyToken(token, (err, token) => {
+    await tokenService.veryfyToken(token, (err, email) => {
       if (err) {
         return response.status(403).json({ message: err });
       }
+      console.log(token);
       next();
     });
   } else {

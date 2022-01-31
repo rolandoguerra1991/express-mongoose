@@ -16,24 +16,25 @@ const sendEmail = async (payload) => {
   }
 };
 
-const sendResetPasswordEmail = async () => {
+const sendResetPasswordEmail = async (email, token) => {
+  console.log(email);
   const emailData = {
     from: process.env.MAIL_FROM_ADDRESS,
     to: email,
     subject: 'Reset Password',
     text: '',
-    html: `<a href="${process.env.FRONTEND_URL}/reset-password/${passwordResetToken}">Reset Password</a>`,
+    html: `<a href="${process.env.FRONTEND_URL}/reset-password/${token}">Reset Password</a>`,
   };
   await sendEmail(emailData);
 };
 
-const sendVerificationEmail = async () => {
+const sendVerificationEmail = async (email, token) => {
   const emailData = {
     from: process.env.MAIL_FROM_ADDRESS,
     to: email,
     subject: 'Email Verification',
     text: 'Email Verification',
-    html: `<a href="${process.env.FRONTEND_URL}/verify-email/${emailVerificationToken}">Verify Email</a>`,
+    html: `<a href="${process.env.FRONTEND_URL}/verify-email/${token}">Verify Email</a>`,
   };
   await sendEmail(emailData);
 };

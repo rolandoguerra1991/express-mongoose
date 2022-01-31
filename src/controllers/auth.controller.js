@@ -19,8 +19,7 @@ const register = catchRequest(async (request, response) => {
 });
 
 const logout = catchRequest(async (request, response) => {
-  const { user } = request.user;
-  await authService.logout(user._id);
+  await authService.logout(request.userId);
   response.json({
     message: 'User logged out successfully',
   });
@@ -36,15 +35,16 @@ const sendResetPasswordEmail = catchRequest(async (request, response) => {
 
 const resetPassword = catchRequest(async (request, response) => {
   const { password } = request.body;
-  const { authorization } = request.headers;
-  await authService.resetPassword({ password, passwordResetToken: authorization.split(' ')[1] });
+  const { passwordResetToken } = request.params;
+  await authService.resetPassword({ password, passwordResetToken });
   response.json({
     message: 'Reset password',
   });
 });
 
 const sendVerificationEmail = catchRequest(async (request, response) => {
-  await authService.sendVerificationEmail(request.body);
+  const { email } = request.body;
+  await authService.sendVerificationEmail(email);
   response.json({
     message: 'Verification email sent successfully',
   });

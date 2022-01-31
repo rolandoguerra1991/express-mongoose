@@ -9,7 +9,7 @@ const verifyEmailToken = async (request, response, next) => {
     if (!verifyToken) {
       return response.status(401).json({ message: 'Invalid token' });
     }
-    await tokenService.veryfyToken(token, (err, token) => {
+    await tokenService.veryfyToken(token, (err, email) => {
       if (err) {
         return response.status(403).json({ message: err });
       }

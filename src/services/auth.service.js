@@ -9,7 +9,7 @@ const autenticate = async (payload) => {
     const { email, password } = payload;
     const user = await verifyIfExistUser(email);
     await validateUserPassword(password, user);
-    const token = await tokenService.generateToken(user._id);
+    const token = await tokenService.generateToken({ id: user._id });
     await userService.updateUser({ _id: user._id }, { token });
 
     output = {
@@ -54,9 +54,9 @@ const logout = async (id) => {
 
 const sendResetPasswordEmail = async (email) => {
   try {
-    const passwordResetToken = tokenService.generateToken({ email });
+    const passwordResetToken = await tokenService.generateToken({ email });
     await userService.updateUser({ email }, { passwordResetToken });
-    await emailsService.sendResetPasswordEmail();
+    await emailsService.sendResetPasswordEmail(email, passwordResetToken);
   } catch (error) {
     throw error;
   }
@@ -64,22 +64,21 @@ const sendResetPasswordEmail = async (email) => {
 
 const resetPassword = async (payload) => {
   try {
-    const { password, passwordResetToken } = payload;
-    await userService.changePassword({ passwordResetToken }, password);
+    const { email, password } = payload;
+    await userService.changePassword({ email }, password);
   } catch (error) {
     throw error;
   }
 };
 
-const sendVerificationEmail = async (payload) => {
+const sendVerificationEmail = async (email) => {
   try {
-    const { email } = payload;
     if (await isVerified(email)) {
       throw 'Email already verified';
     }
     const emailVerificationToken = tokenService.generateToken({ email });
     await userService.updateUser({ email }, { emailVerificationToken });
-    await emailsService.sendVerificationEmail();
+    await emailsService.sendVerificationEmail(email, emailVerificationToken);
   } catch (error) {
     throw error;
   }
