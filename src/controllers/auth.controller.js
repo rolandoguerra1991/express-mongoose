@@ -19,8 +19,8 @@ const register = catchRequest(async (request, response) => {
 });
 
 const logout = catchRequest(async (request, response) => {
-  const { user } = request;
-  await authService.logout(user.id);
+  const { user } = request.user;
+  await authService.logout(user._id);
   response.json({
     message: 'User logged out successfully',
   });

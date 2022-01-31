@@ -10,7 +10,7 @@ const generateToken = async (payload) => {
 };
 
 const veryfyToken = async (token, callback) => {
-  jwt.verify(token, process.env.JWT_SECRET, callback(error, token));
+  jwt.verify(token, process.env.JWT_SECRET, callback);
 };
 
 module.exports = {

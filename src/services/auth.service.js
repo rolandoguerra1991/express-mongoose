@@ -1,4 +1,6 @@
-const { userService, tokenService, emailsService } = require('./');
+const userService = require('./user.service');
+const tokenService = require('./token.service');
+const emailsService = require('./emails.service');
 
 const bcrypt = require('bcrypt');
 
@@ -7,7 +9,7 @@ const autenticate = async (payload) => {
     const { email, password } = payload;
     const user = await verifyIfExistUser(email);
     await validateUserPassword(password, user);
-    const token = await tokenService.generateToken({ user });
+    const token = await tokenService.generateToken(user._id);
     await userService.updateUser({ _id: user._id }, { token });
 
     output = {
