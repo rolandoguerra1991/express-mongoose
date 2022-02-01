@@ -64,8 +64,8 @@ const sendResetPasswordEmail = async (email) => {
 
 const resetPassword = async (payload) => {
   try {
-    const { email, password } = payload;
-    await userService.changePassword({ email }, password);
+    const { passwordResetToken, password } = payload;
+    await userService.changePassword({ passwordResetToken }, password);
   } catch (error) {
     throw error;
   }
@@ -73,10 +73,7 @@ const resetPassword = async (payload) => {
 
 const sendVerificationEmail = async (email) => {
   try {
-    if (await isVerified(email)) {
-      throw 'Email already verified';
-    }
-    const emailVerificationToken = tokenService.generateToken({ email });
+    const emailVerificationToken = await tokenService.generateToken({ email });
     await userService.updateUser({ email }, { emailVerificationToken });
     await emailsService.sendVerificationEmail(email, emailVerificationToken);
   } catch (error) {
@@ -84,19 +81,9 @@ const sendVerificationEmail = async (email) => {
   }
 };
 
-const verifyEmail = async (payload) => {
-  const { email } = payload;
+const verifyEmail = async (token) => {
   try {
-    await userService.updateUser({ email }, { emailVerificationToken: null, emailVerified: true });
-  } catch (error) {
-    throw error;
-  }
-};
-
-const isVerified = async (email) => {
-  try {
-    const user = await userService.findUser({ email });
-    return user.emailVerified;
+    await userService.updateUser({ emailVerificationToken: token }, { emailVerificationToken: null, emailVerified: true });
   } catch (error) {
     throw error;
   }

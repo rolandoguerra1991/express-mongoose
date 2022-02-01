@@ -25,7 +25,7 @@ const logout = catchRequest(async (request, response) => {
   });
 });
 
-const sendResetPasswordEmail = catchRequest(async (request, response) => {
+const forgotPassword = catchRequest(async (request, response) => {
   const { email } = request.body;
   await authService.sendResetPasswordEmail(email);
   response.json({
@@ -34,9 +34,8 @@ const sendResetPasswordEmail = catchRequest(async (request, response) => {
 });
 
 const resetPassword = catchRequest(async (request, response) => {
-  const { password } = request.body;
-  const { passwordResetToken } = request.params;
-  await authService.resetPassword({ password, passwordResetToken });
+  const { password, token } = request.body;
+  await authService.resetPassword({ password, passwordResetToken: token });
   response.json({
     message: 'Reset password',
   });
@@ -51,7 +50,8 @@ const sendVerificationEmail = catchRequest(async (request, response) => {
 });
 
 const verifyEmail = catchRequest(async (request, response) => {
-  await authService.verifyEmail(request.body);
+  const { token } = request.body;
+  await authService.verifyEmail(token);
   response.json({
     message: 'Email verified',
   });
@@ -61,7 +61,7 @@ module.exports = {
   login,
   register,
   logout,
-  sendResetPasswordEmail,
+  forgotPassword,
   resetPassword,
   sendVerificationEmail,
   verifyEmail,

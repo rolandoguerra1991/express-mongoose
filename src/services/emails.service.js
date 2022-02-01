@@ -17,7 +17,6 @@ const sendEmail = async (payload) => {
 };
 
 const sendResetPasswordEmail = async (email, token) => {
-  console.log(email);
   const emailData = {
     from: process.env.MAIL_FROM_ADDRESS,
     to: email,
