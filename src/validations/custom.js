@@ -1,4 +1,4 @@
-const userService = require('../services/user.service');
+const userService = require('../services/userService');
 
 const emailIsTaken = async (email) => {
   const user = await userService.findUser({ email });

@@ -1,6 +1,6 @@
-const userService = require('./user.service');
-const tokenService = require('./token.service');
-const emailsService = require('./emails.service');
+const userService = require('./userService');
+const tokenService = require('./tokenService');
+const emailsService = require('./emailsService');
 
 const bcrypt = require('bcrypt');
 

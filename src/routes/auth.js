@@ -7,7 +7,7 @@ const {
   resetPassword,
   sendVerificationEmail,
   verifyEmail,
-} = require('../controllers/auth.controller');
+} = require('../controllers/authController');
 const { authenticated } = require('../middlewares');
 const {
   loginValidation,
