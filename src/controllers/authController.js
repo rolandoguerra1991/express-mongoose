@@ -1,58 +1,58 @@
 const { authService } = require('../services');
 const catchRequest = require('../utils/catchRequest');
 
-const login = catchRequest(async (request, response) => {
-  const { user, token } = await authService.autenticate(request.body);
-  response.json({
+const login = catchRequest(async (req, res) => {
+  const { user, token } = await authService.autenticate(req.body);
+  res.json({
     message: 'User logged in successfully',
     user,
     token,
   });
 });
 
-const register = catchRequest(async (request, response) => {
-  const user = await authService.register(request.body);
-  response.json({
+const register = catchRequest(async (req, res) => {
+  const user = await authService.register(req.body);
+  res.json({
     message: 'User created successfully',
     user,
   });
 });
 
-const logout = catchRequest(async (request, response) => {
-  await authService.logout(request.userId);
-  response.json({
+const logout = catchRequest(async (req, res) => {
+  await authService.logout(req.userId);
+  res.json({
     message: 'User logged out successfully',
   });
 });
 
-const forgotPassword = catchRequest(async (request, response) => {
-  const { email } = request.body;
+const forgotPassword = catchRequest(async (req, res) => {
+  const { email } = req.body;
   await authService.sendResetPasswordEmail(email);
-  response.json({
+  res.json({
     message: 'Reset password email sent successfully',
   });
 });
 
-const resetPassword = catchRequest(async (request, response) => {
-  const { password, token } = request.body;
+const resetPassword = catchRequest(async (req, res) => {
+  const { password, token } = req.body;
   await authService.resetPassword({ password, passwordResetToken: token });
-  response.json({
+  res.json({
     message: 'Reset password',
   });
 });
 
-const sendVerificationEmail = catchRequest(async (request, response) => {
-  const { email } = request.body;
+const sendVerificationEmail = catchRequest(async (req, res) => {
+  const { email } = req.body;
   await authService.sendVerificationEmail(email);
-  response.json({
+  res.json({
     message: 'Verification email sent successfully',
   });
 });
 
-const verifyEmail = catchRequest(async (request, response) => {
-  const { token } = request.body;
+const verifyEmail = catchRequest(async (req, res) => {
+  const { token } = req.body;
   await authService.verifyEmail(token);
-  response.json({
+  res.json({
     message: 'Email verified',
   });
 });

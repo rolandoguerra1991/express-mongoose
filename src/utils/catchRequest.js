@@ -1,11 +1,11 @@
 const { validationResult } = require('express-validator');
 
-const catchRequest = (fn) => (request, response, next) => {
-  const errors = validationResult(request);
+const catchRequest = (fn) => (req, res, next) => {
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    response.status(422).json({ errors: errors.array() });
+    res.status(422).json({ errors: errors.array() });
   }
-  Promise.resolve(fn(request, response, next)).catch((error) => response.status(500).json({ message: error }));
+  Promise.resolve(fn(req, res, next)).catch((error) => res.status(500).json({ message: error }));
 };
 
 module.exports = catchRequest;
