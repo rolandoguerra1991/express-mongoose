@@ -4,10 +4,13 @@ const { authenticated } = require('../middlewares');
 
 const router = express.Router();
 
-router.get('/', [authenticated], list);
-router.post('/', [authenticated], create);
-router.put('/:id', [authenticated], update);
-router.get('/:id', [authenticated], read);
-router.delete('/:id', [authenticated], destroy);
+router.use(authenticated);
+
+router
+  .get('/', list)
+  .post('/', create)
+  .put('/:id', update)
+  .get('/:id', read)
+  .delete('/:id', destroy);
 
 module.exports = router;

@@ -19,12 +19,17 @@ const {
 
 const router = express.Router();
 
-router.post('/login', [loginValidation], login);
-router.post('/register', [registerValidation], register);
-router.post('/logout', [authenticated], logout);
-router.post('/forgot-password', forgotPassword);
-router.post('/reset-password', [resetPasswordValidation], resetPassword);
-router.post('/send-verification-email', [authenticated, sendVerificationEmailValidation], sendVerificationEmail);
-router.post('/verify-email', [authenticated, verifyEmailValidation], verifyEmail);
+router
+  .post('/login', [loginValidation], login)
+  .post('/register', [registerValidation], register)
+  .post('/forgot-password', forgotPassword)
+  .post('/reset-password', [resetPasswordValidation], resetPassword);
+
+router.use(authenticated);
+
+router
+  .post('/logout', logout)
+  .post('/send-verification-email', [sendVerificationEmailValidation], sendVerificationEmail)
+  .post('/verify-email', [verifyEmailValidation], verifyEmail);
 
 module.exports = router;
