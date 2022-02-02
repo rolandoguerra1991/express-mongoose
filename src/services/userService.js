@@ -75,8 +75,11 @@ const query = async (payload) => {
 
 const deleteUser = async (payload) => {
   try {
-    const user = await User.findOneAndDelete(payload);
-    return user;
+    const { _id, authUserId } = payload;
+    if (_id === authUserId) {
+      throw 'You cannot delete yourself';
+    }
+    await User.findOneAndDelete({ _id });
   } catch (error) {
     throw error;
   }
