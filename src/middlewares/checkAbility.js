@@ -1,4 +1,13 @@
-const { authorization } = require('../config');
+const authorization = [
+  {
+    role: 'admin',
+    abilities: ['*'],
+  },
+  {
+    role: 'user',
+    abilities: [],
+  },
+];
 
 const checkAbilities = (ability) => async (req, res, next) => {
   const rules = authorization;
