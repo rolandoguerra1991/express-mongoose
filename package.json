@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon ./bin/server.js"
+    "dev": "cross-env NODE_ENV=development nodemon ./src/index.js"
   },
   "keywords": [],
   "author": "Rolando Guerra",
