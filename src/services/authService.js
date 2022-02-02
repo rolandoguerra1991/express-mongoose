@@ -9,14 +9,13 @@ const autenticate = async (payload) => {
     const { email, password } = payload;
     const user = await verifyIfExistUser(email);
     await validateUserPassword(password, user);
-    const token = await tokenService.generateToken({ id: user._id });
-    await userService.updateUser({ _id: user._id }, { token });
+    const authToken = await tokenService.generateToken({ id: user._id.toString(), role: user.role });
+    await userService.updateUser({ _id: user._id }, { authToken });
 
-    output = {
+    const output = {
       user,
-      token,
+      authToken,
     };
-
     return output;
   } catch (error) {
     throw error;

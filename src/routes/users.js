@@ -1,10 +1,10 @@
 const express = require('express');
 const { list, create, update, read, destroy } = require('../controllers/userController');
-const { authenticated } = require('../middlewares');
+const { authenticated, checkRole } = require('../middlewares');
 
 const router = express.Router();
 
-router.use(authenticated);
+router.use(authenticated, checkRole('admin'));
 
 router
   .get('/', list)
