@@ -2,15 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 const userController = require('../controllers/userController');
-const { authenticated, checkRole } = require('../middlewares');
+const middlewares = require('../middlewares');
 
-router.use(authenticated, checkRole('admin'));
+router.use(middlewares.authenticated, middlewares.checkRole('admin'));
 
-router
-  .get('/', userController.list)
-  .post('/', userController.create)
-  .put('/:id', userController.update)
-  .get('/:id', userController.read)
-  .delete('/:id', userController.destroy);
+router.get('/', userController.list);
+router.post('/', userController.create);
+router.put('/:id', userController.update);
+router.get('/:id', userController.read);
+router.delete('/:id', userController.destroy);
 
 module.exports = router;

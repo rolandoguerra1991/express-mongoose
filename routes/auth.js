@@ -1,27 +1,19 @@
 const express = require('express');
-
-const authController = require('../controllers/authController');
-const { authenticated } = require('../middlewares');
-const { loginValidation,
-  registerValidation,
-  resetPasswordValidation,
-  sendVerificationEmailValidation,
-  verifyEmailValidation,
-} = require('../validations/auth');
-
 const router = express.Router();
 
-router
-  .post('/login', [loginValidation], authController.login)
-  .post('/register', [registerValidation], authController.register)
-  .post('/forgot-password', authController.forgotPassword)
-  .post('/reset-password', [resetPasswordValidation], authController.resetPassword);
+const authController = require('../controllers/authController');
+const middlewares = require('../middlewares');
+const validations = require('../validations');
 
-router.use(authenticated);
+router.post('/login', validations.auth.loginValidation, authController.login);
+router.post('/register', validations.auth.registerValidation, authController.register);
+router.post('/forgot-password', authController.forgotPassword);
+router.post('/reset-password', validations.auth.resetPasswordValidation, authController.resetPassword);
 
-router
-  .post('/logout', authController.logout)
-  .post('/send-verification-email', [sendVerificationEmailValidation], authController.sendVerificationEmail)
-  .post('/verify-email', [verifyEmailValidation], authController.verifyEmail);
+router.use(middlewares.authenticated);
+
+router.post('/logout', authController.logout);
+router.post('/send-verification-email', validations.auth.sendVerificationEmailValidation, authController.sendVerificationEmail);
+router.post('/verify-email', validations.auth.verifyEmailValidation, authController.verifyEmail);
 
 module.exports = router;
