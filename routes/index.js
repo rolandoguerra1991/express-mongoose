@@ -4,7 +4,7 @@ const fs = require('fs');
 
 // Dyanmic Routing
 // Adds all routes from routes folder
-fs.readdir('./src/routes/', (err, files) => {
+fs.readdir('./routes/', (err, files) => {
   files.forEach((file) => {
     if (file !== 'index.js') {
       const url = `/${file.split('.')[0]}/`;

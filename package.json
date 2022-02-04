@@ -1,13 +1,13 @@
 {
   "name": "express-mongoose",
   "version": "1.0.0",
-  "description": "",
+  "description": "Expressjs and Mongoose boilerplate",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon ./src/index.js"
+    "dev": "cross-env NODE_ENV=development nodemon ./index.js"
   },
   "keywords": [],
   "author": "Rolando Guerra",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.1",

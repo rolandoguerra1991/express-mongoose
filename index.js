@@ -7,7 +7,10 @@ const morgan = require('morgan');
 const cors = require('cors');
 const compression = require('compression');
 const router = require('./routes');
+
+// Constants
 const origin = process.env.CORS_ORIGIN;
+const port = process.env.PORT || 3000;
 
 // Initialize the app
 const app = express();
@@ -26,4 +29,7 @@ app.use(compression());
 // Router
 app.use('/api/v1/', router);
 
-module.exports = app;
+// Start the server
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});

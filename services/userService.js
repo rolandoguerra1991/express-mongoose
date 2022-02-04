@@ -41,7 +41,7 @@ const generateHashedPassword = async (password) => {
 
 const removeToken = async (id) => {
   try {
-    await User.findByIdAndUpdate(id, { token: null });
+    await User.findByIdAndUpdate(id, { authToken: null });
   } catch (error) {
     throw error;
   }
