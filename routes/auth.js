@@ -11,7 +11,7 @@ const {
   logout,
 } = require('../controllers/authController');
 
-const middlewares = require('../middlewares');
+const { authenticated } = require('../middlewares');
 
 const {
   loginValidation,
@@ -27,7 +27,7 @@ router.post('/register', registerValidation, register);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPasswordValidation, resetPassword);
 
-router.use(middlewares.authenticated);
+router.use(authenticated);
 
 router.post('/logout', logout);
 router.post('/send-verification-email', sendVerificationEmailValidation, sendVerificationEmail);
