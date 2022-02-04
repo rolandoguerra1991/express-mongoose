@@ -29,9 +29,17 @@ const validateToken = async (payload) => {
   }
 };
 
+const validateID = async (id) => {
+  const user = await userService.findUserById(id);
+  if (!user) {
+    throw 'Invalid ID';
+  }
+}
+
 module.exports = {
   emailIsTaken,
   alreadyLoggedIn,
   isEmailVerified,
   validateToken,
+  validateID,
 };
