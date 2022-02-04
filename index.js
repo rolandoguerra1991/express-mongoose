@@ -7,10 +7,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const compression = require('compression');
 const router = require('./routes');
-
-// Constants
-const origin = process.env.CORS_ORIGIN;
-const port = process.env.PORT || 3000;
+const config = require('./config');
 
 // Initialize the app
 const app = express();
@@ -23,13 +20,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
-app.use(cors({ origin }));
+app.use(cors({ origin: config.cors.origin }));
 app.use(compression());
 
 // Router
 app.use('/api/v1/', router);
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+app.listen(config.app.port, () => {
+  console.log(`Server running on port ${config.app.port}`);
 });

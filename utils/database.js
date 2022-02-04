@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+const config = require('../config');
 
 const datBaseConnection = () => {
   mongoose
-    .connect(process.env.DB_CONNECTION)
+    .connect(config.database.connectionString)
     .then(() => {
       console.log('Connected to database');
     })

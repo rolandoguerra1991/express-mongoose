@@ -1,6 +1,6 @@
 const userService = require('./userService');
 const tokenService = require('./tokenService');
-const emailsService = require('./emailsService');
+const emailService = require('./emailService');
 
 const bcrypt = require('bcrypt');
 
@@ -55,7 +55,7 @@ const sendResetPasswordEmail = async (email) => {
   try {
     const passwordResetToken = await tokenService.generateToken({ email });
     await userService.updateUser({ email }, { passwordResetToken });
-    await emailsService.sendResetPasswordEmail(email, passwordResetToken);
+    await emailService.sendResetPasswordEmail(email, passwordResetToken);
   } catch (error) {
     throw error;
   }
@@ -74,7 +74,7 @@ const sendVerificationEmail = async (email) => {
   try {
     const emailVerificationToken = await tokenService.generateToken({ email });
     await userService.updateUser({ email }, { emailVerificationToken });
-    await emailsService.sendVerificationEmail(email, emailVerificationToken);
+    await emailService.sendVerificationEmail(email, emailVerificationToken);
   } catch (error) {
     throw error;
   }

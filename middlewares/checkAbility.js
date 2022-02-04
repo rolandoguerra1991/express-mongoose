@@ -1,17 +1,8 @@
-const authorization = [
-  {
-    role: 'admin',
-    abilities: ['*'],
-  },
-  {
-    role: 'user',
-    abilities: [],
-  },
-];
+const config = require('../config');
 
 const checkAbilities = (ability) => async (req, res, next) => {
-  const rules = authorization;
-  const userAbilities = rules.find(rule => rule.role === req.user.role).abilities;
+  const rules = config.authorization;
+  const userAbilities = rules.find((rule) => rule.role === req.user.role).abilities;
   const haveAbility = userAbilities.includes(ability);
 
   if (!haveAbility && !userAbilities.includes('*')) {

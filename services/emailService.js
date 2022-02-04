@@ -1,13 +1,14 @@
 const nodemailer = require('nodemailer');
+const config = require('../config');
 
 const sendEmail = async (payload) => {
   try {
     const transport = nodemailer.createTransport({
-      host: process.env.MAIL_HOST,
-      port: process.env.MAIL_PORT,
+      host: config.email.host,
+      port: config.email.port,
       auth: {
-        user: process.env.MAIL_USERNAME,
-        pass: process.env.MAIL_PASSWORD,
+        user: config.email.username,
+        pass: config.email.password,
       },
     });
     await transport.sendMail(payload).catch((error) => console.log(error.message));
@@ -18,22 +19,22 @@ const sendEmail = async (payload) => {
 
 const sendResetPasswordEmail = async (email, token) => {
   const emailData = {
-    from: process.env.MAIL_FROM_ADDRESS,
+    from: config.email.from,
     to: email,
     subject: 'Reset Password',
     text: '',
-    html: `<a href="${process.env.FRONTEND_URL}/reset-password/${token}">Reset Password</a>`,
+    html: `<a href="${config.app.frontend}/reset-password/${token}">Reset Password</a>`,
   };
   await sendEmail(emailData);
 };
 
 const sendVerificationEmail = async (email, token) => {
   const emailData = {
-    from: process.env.MAIL_FROM_ADDRESS,
+    from: config.email.from,
     to: email,
     subject: 'Email Verification',
     text: 'Email Verification',
-    html: `<a href="${process.env.FRONTEND_URL}/verify-email/${token}">Verify Email</a>`,
+    html: `<a href="${config.app.frontend}/verify-email/${token}">Verify Email</a>`,
   };
   await sendEmail(emailData);
 };
