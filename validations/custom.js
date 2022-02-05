@@ -1,46 +1,51 @@
 const userService = require('../services/userService');
 
 const emailIsTaken = async (email) => {
-  const user = await userService.findUser({ email });
-  if (user) {
-    throw 'Email already exists';
-  }
-  return true;
+  return await userService.findUser({ email }).then((user) => {
+    if (user) {
+      return Promise.reject('Email already exists');
+    }
+  });
 };
 
 const alreadyLoggedIn = async (email) => {
-  const user = await userService.findUser({ email });
-  if (user.authToken) {
-    throw 'Already logged in';
-  }
+  return await userService.findUser({ email }).then((user) => {
+    if (user.authToken) {
+      return Promise.reject('Already logged in');
+    }
+  });
 };
 
 const isEmailVerified = async (email) => {
-  const user = await userService.findUser({ email });
-  if (user.emailVerified) {
-    throw 'Email already verified';
-  }
+  return await userService.findUser({ email }).then((user) => {
+    if (user.emailVerified) {
+      return Promise.reject('Email already verified');
+    }
+  });
 };
 
 const validateToken = async (payload) => {
-  const user = await userService.findUser(payload);
-  if (!user) {
-    throw 'Invalid token';
-  }
+  return await userService.findUser(payload).then((user) => {
+    if (!user) {
+      return Promise.reject('Invalid token');
+    }
+  });
 };
 
 const validateID = async (id) => {
-  const user = await userService.findUserById(id);
-  if (!user) {
-    throw 'Invalid ID';
-  }
+  return await userService.findUserById(id).then((user) => {
+    if (!user) {
+      return Promise.reject('Invalid ID');
+    }
+  });
 };
 
 const verifyIfExists = async (email) => {
-  const user = await userService.findUser({ email });
-  if (!user) {
-    throw 'Invalid user';
-  }
+  return await userService.findUser({ email }).then((user) => {
+    if (!user) {
+      return Promise.reject('Invalid user');
+    }
+  });
 };
 
 module.exports = {
