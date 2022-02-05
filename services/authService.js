@@ -17,8 +17,8 @@ const autenticate = async (payload) => {
       authToken,
     };
     return output;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -26,8 +26,8 @@ const register = async (payload) => {
   try {
     const user = await userService.createUser(payload);
     return user;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -38,16 +38,16 @@ const validateUserPassword = async (password, user) => {
       throw 'Invalid password';
     }
     return isValid;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
 const logout = async (id) => {
   try {
     await userService.removeToken(id);
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -56,8 +56,8 @@ const sendResetPasswordEmail = async (email) => {
     const passwordResetToken = await tokenService.generateToken({ email });
     await userService.updateUser({ email }, { passwordResetToken });
     await emailService.sendResetPasswordEmail(email, passwordResetToken);
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -65,8 +65,8 @@ const resetPassword = async (payload) => {
   try {
     const { passwordResetToken, password } = payload;
     await userService.changePassword({ passwordResetToken }, password);
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -75,16 +75,16 @@ const sendVerificationEmail = async (email) => {
     const emailVerificationToken = await tokenService.generateToken({ email });
     await userService.updateUser({ email }, { emailVerificationToken });
     await emailService.sendVerificationEmail(email, emailVerificationToken);
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
 const verifyEmail = async (token) => {
   try {
     await userService.updateUser({ emailVerificationToken: token }, { emailVerificationToken: null, emailVerified: true });
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 

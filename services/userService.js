@@ -7,8 +7,8 @@ const createUser = async (payload) => {
     const hashedPassword = await generateHashedPassword(password);
     const user = await User.create({ name, email, password: hashedPassword });
     return user;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -16,8 +16,8 @@ const findUser = async (query) => {
   try {
     const user = await User.findOne(query).exec();
     return user;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -25,8 +25,8 @@ const updateUser = async (query, update) => {
   try {
     const user = await User.findOneAndUpdate(query, update);
     return user;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -34,16 +34,16 @@ const generateHashedPassword = async (password) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     return hashedPassword;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
 const removeToken = async (id) => {
   try {
     await User.findByIdAndUpdate(id, { authToken: null });
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -51,8 +51,8 @@ const changePassword = async (query, password) => {
   try {
     const hashedPassword = await generateHashedPassword(password);
     await updateUser(query, { password: hashedPassword, passwordResetToken: null });
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -68,8 +68,8 @@ const query = async (payload) => {
     }
     const user = await User.paginate(query, { page, limit });
     return user;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -80,8 +80,8 @@ const deleteUser = async (payload) => {
       throw 'You cannot delete yourself';
     }
     await User.findOneAndDelete({ _id });
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -89,8 +89,8 @@ const findUserById = async (id) => {
   try {
     const user = await User.findById(id).exec();
     return user;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 

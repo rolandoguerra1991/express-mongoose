@@ -5,7 +5,7 @@ const catchRequest = (fn) => (req, res, next) => {
   if (!errors.isEmpty()) {
     res.status(422).json({ errors: errors.array() });
   }
-  Promise.resolve(fn(req, res, next)).catch((error) => res.status(500).json({ message: error }));
+  Promise.resolve(fn(req, res, next)).catch((err) => res.status(500).json({ message: err }));
 };
 
 module.exports = catchRequest;

@@ -5,23 +5,27 @@ const emailIsTaken = async (email) => {
     if (user) {
       return Promise.reject('Email already exists');
     }
-  });
+  }).catch(err => Promise.reject(err));
 };
 
 const alreadyLoggedIn = async (email) => {
-  return await userService.findUser({ email }).then((user) => {
-    if (user.authToken) {
-      return Promise.reject('Already logged in');
-    }
-  });
+  return await verifyIfExists(email).then(async () => {
+    return await userService.findUser({ email }).then((user) => {
+      if (user.authToken) {
+        return Promise.reject('Already logged in');
+      }
+    });
+  }).catch(err => Promise.reject(err));
 };
 
 const isEmailVerified = async (email) => {
-  return await userService.findUser({ email }).then((user) => {
-    if (user.emailVerified) {
-      return Promise.reject('Email already verified');
-    }
-  });
+  return await verifyIfExists(email).then(async () => {
+    return await userService.findUser({ email }).then((user) => {
+      if (user.emailVerified) {
+        return Promise.reject('Email already verified');
+      }
+    });
+  }).catch(err => Promise.reject(err));
 };
 
 const validateToken = async (payload) => {
@@ -29,7 +33,7 @@ const validateToken = async (payload) => {
     if (!user) {
       return Promise.reject('Invalid token');
     }
-  });
+  }).catch(err => Promise.reject(err));
 };
 
 const validateID = async (id) => {
@@ -37,7 +41,7 @@ const validateID = async (id) => {
     if (!user) {
       return Promise.reject('Invalid ID');
     }
-  });
+  }).catch(err => Promise.reject(err));
 };
 
 const verifyIfExists = async (email) => {
@@ -45,7 +49,7 @@ const verifyIfExists = async (email) => {
     if (!user) {
       return Promise.reject('Invalid user');
     }
-  });
+  }).catch(err => Promise.reject(err));
 };
 
 module.exports = {

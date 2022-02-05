@@ -4,9 +4,9 @@ const checkRole = (role) => async (req, res, next) => {
       res.status(403).json({ message: 'You are not authorized to access this resource' });
     }
     next();
-  } catch (error) {
-    res.status(error.status || 500).json({
-      message: error.message || 'Internal server error',
+  } catch (err) {
+    res.status(err.status || 500).json({
+      message: err.message || 'Internal server error',
     });
   }
 };

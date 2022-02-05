@@ -24,9 +24,9 @@ const sendEmail = async (payload) => {
       },
     });
     transport.use('compile', hbs(options));
-    await transport.sendMail(payload).catch((error) => console.log(error.message));
-  } catch (error) {
-    throw error;
+    await transport.sendMail(payload).catch((err) => Promise.reject(err));
+  } catch (err) {
+    throw err;
   }
 };
 
@@ -38,7 +38,7 @@ const sendResetPasswordEmail = async (email, passwordResetToken) => {
     template: 'forgot-password',
     context: { url: `${config.app.frontend}/reset-password/${passwordResetToken}` },
   };
-  await sendEmail(emailData);
+  await sendEmail(emailData).catch(err => Promise.reject(err));
 };
 
 const sendVerificationEmail = async (email, emailVerificationToken) => {
@@ -49,7 +49,7 @@ const sendVerificationEmail = async (email, emailVerificationToken) => {
     template: 'verify-email',
     context: { url: `${config.app.frontend}/verify-email/${emailVerificationToken}` },
   };
-  await sendEmail(emailData);
+  await sendEmail(emailData).catch(err => Promise.reject(err));
 };
 
 module.exports = {
