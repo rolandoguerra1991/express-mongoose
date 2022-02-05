@@ -5,42 +5,59 @@ const createUserValidate = [
   body('password')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long')
+    .bail()
     .notEmpty()
-    .withMessage('Password is required'),
-  body('name').notEmpty().withMessage('Name is required'),
+    .withMessage('Password is required')
+    .bail(),
+  body('name')
+    .notEmpty()
+    .withMessage('Name is required')
+    .bail(),
   body('email')
     .isEmail()
     .withMessage('Email is invalid')
+    .bail()
     .notEmpty()
     .withMessage('Email is required')
-    .custom((email) => emailIsTaken(email)),
+    .bail()
+    .custom(emailIsTaken)
+    .bail(),
 ];
 
 const updateUserValidate = [
   param('id')
     .notEmpty()
     .withMessage('ID is required')
-    .custom((id) => validateID(id)),
+    .bail()
+    .custom(validateID)
+    .bail(),
   body('password')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long')
+    .bail()
     .notEmpty()
-    .withMessage('Password is required'),
+    .withMessage('Password is required')
+    .bail(),
   body('name')
     .notEmpty()
-    .withMessage('Name is required'),
+    .withMessage('Name is required')
+    .bail(),
   body('email')
     .isEmail()
     .withMessage('Email is invalid')
+    .bail()
     .notEmpty()
-    .withMessage('Email is required'),
+    .withMessage('Email is required')
+    .bail(),
 ];
 
 const deleteUserValidate = [
   param('id')
     .notEmpty()
     .withMessage('ID is required')
-    .custom((id) => validateID(id)),
+    .bail()
+    .custom(validateID)
+    .bail(),
 ];
 
 module.exports = {

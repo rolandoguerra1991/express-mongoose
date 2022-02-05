@@ -54,8 +54,8 @@ const logout = async (id) => {
 const sendResetPasswordEmail = async (email) => {
   try {
     const passwordResetToken = await tokenService.generateToken({ email });
-    await userService.updateUser({ email }, { passwordResetToken });
     await emailService.sendResetPasswordEmail(email, passwordResetToken);
+    await userService.updateUser({ email }, { passwordResetToken });
   } catch (err) {
     throw err;
   }
