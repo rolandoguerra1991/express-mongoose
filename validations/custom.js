@@ -10,7 +10,7 @@ const emailIsTaken = async (email) => {
 
 const alreadyLoggedIn = async (email) => {
   const user = await userService.findUser({ email });
-  if (user.token) {
+  if (user.authToken) {
     throw 'Already logged in';
   }
 };
@@ -34,7 +34,14 @@ const validateID = async (id) => {
   if (!user) {
     throw 'Invalid ID';
   }
-}
+};
+
+const verifyIfExists = async (email) => {
+  const user = await userService.findUser({ email });
+  if (!user) {
+    throw 'Invalid user';
+  }
+};
 
 module.exports = {
   emailIsTaken,
@@ -42,4 +49,5 @@ module.exports = {
   isEmailVerified,
   validateToken,
   validateID,
+  verifyIfExists,
 };

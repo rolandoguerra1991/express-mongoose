@@ -1,8 +1,20 @@
 const nodemailer = require('nodemailer');
+const hbs = require('nodemailer-express-handlebars');
 const config = require('../config');
+const path = require('path');
 
 const sendEmail = async (payload) => {
   try {
+    const options = {
+      viewEngine: {
+        extname: '.hbs',
+        layoutsDir: path.join(__dirname, '../views/emails/'),
+        defaultLayout: path.join(__dirname, '../views/emails/template'),
+        partialsDir: path.join(__dirname, '../views/emails/'),
+      },
+      viewPath: path.join(__dirname, '../views/emails'),
+      extName: '.hbs',
+    };
     const transport = nodemailer.createTransport({
       host: config.email.host,
       port: config.email.port,
@@ -11,30 +23,31 @@ const sendEmail = async (payload) => {
         pass: config.email.password,
       },
     });
+    transport.use('compile', hbs(options));
     await transport.sendMail(payload).catch((error) => console.log(error.message));
   } catch (error) {
     throw error;
   }
 };
 
-const sendResetPasswordEmail = async (email, token) => {
+const sendResetPasswordEmail = async (email, passwordResetToken) => {
   const emailData = {
     from: config.email.from,
     to: email,
     subject: 'Reset Password',
-    text: '',
-    html: `<a href="${config.app.frontend}/reset-password/${token}">Reset Password</a>`,
+    template: 'forgot-password',
+    context: { url: `${config.app.frontend}/reset-password/${passwordResetToken}` },
   };
   await sendEmail(emailData);
 };
 
-const sendVerificationEmail = async (email, token) => {
+const sendVerificationEmail = async (email, emailVerificationToken) => {
   const emailData = {
     from: config.email.from,
     to: email,
     subject: 'Email Verification',
-    text: 'Email Verification',
-    html: `<a href="${config.app.frontend}/verify-email/${token}">Verify Email</a>`,
+    template: 'verify-email',
+    context: { url: `${config.app.frontend}/verify-email/${emailVerificationToken}` },
   };
   await sendEmail(emailData);
 };

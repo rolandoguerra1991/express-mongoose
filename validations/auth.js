@@ -1,6 +1,6 @@
 const { body } = require('express-validator');
 
-const { emailIsTaken, isEmailVerified, alreadyLoggedIn, validateToken } = require('./custom');
+const { emailIsTaken, isEmailVerified, alreadyLoggedIn, validateToken, verifyIfExists } = require('./custom');
 
 const loginValidation = [
   body('email')
@@ -8,6 +8,7 @@ const loginValidation = [
     .withMessage('Email is invalid')
     .notEmpty()
     .withMessage('Email is required')
+    .custom((email) => verifyIfExists(email))
     .custom((email) => alreadyLoggedIn(email)),
   body('password')
     .isLength({ min: 6 })
@@ -43,7 +44,11 @@ const resetPasswordValidation = [
     .custom((token) => validateToken({ passwordResetToken: token })),
 ];
 
-const sendVerificationEmailValidation = [body('email').custom((email) => isEmailVerified(email))];
+const sendVerificationEmailValidation = [
+  body('email')
+    .custom((email) => verifyIfExists(email))
+    .custom((email) => isEmailVerified(email)),
+  ];
 
 const verifyEmailValidation = [
   body('token')

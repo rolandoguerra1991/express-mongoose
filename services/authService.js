@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const autenticate = async (payload) => {
   try {
     const { email, password } = payload;
-    const user = await verifyIfExistUser(email);
+    const user = await userService.findUser({ email });
     await validateUserPassword(password, user);
     const authToken = await tokenService.generateToken({ id: user._id.toString(), role: user.role });
     await userService.updateUser({ _id: user._id }, { authToken });
@@ -86,14 +86,6 @@ const verifyEmail = async (token) => {
   } catch (error) {
     throw error;
   }
-};
-
-const verifyIfExistUser = async (email) => {
-  const user = await userService.findUser({ email });
-  if (!user) {
-    throw 'User not found';
-  }
-  return user;
 };
 
 module.exports = {
