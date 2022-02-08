@@ -1,7 +1,7 @@
-const config = require('../config');
+const config = require('config');
 
 const checkAbilities = (ability) => async (req, res, next) => {
-  const rules = config.authorization;
+  const rules = config.get('authorization');
   const userAbilities = rules.find((rule) => rule.role === req.user.role).abilities;
   const haveAbility = userAbilities.includes(ability);
 
