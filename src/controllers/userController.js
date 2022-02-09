@@ -17,8 +17,8 @@ const update = catchRequest(async (req, res) => {
 });
 
 const destroy = catchRequest(async (req, res) => {
-  const { userId } = req.user;
-  await userService.deleteUser({ _id: req.params.id, authUserId: userId });
+  const { id } = req.user;
+  await userService.deleteUser({ _id: req.params.id, authUserId: id });
   res.json({ message: 'User deleted successfully' });
 });
 

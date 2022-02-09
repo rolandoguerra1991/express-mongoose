@@ -45,7 +45,7 @@ const validateUserPassword = async (password, user) => {
 
 const logout = async (id) => {
   try {
-    await userService.removeToken(id);
+    await userService.removeAuthToken(id);
   } catch (err) {
     throw err;
   }
@@ -63,8 +63,9 @@ const sendResetPasswordEmail = async (email) => {
 
 const resetPassword = async (payload) => {
   try {
-    const { passwordResetToken, password } = payload;
+    const { passwordResetToken, password, id } = payload;
     await userService.changePassword({ passwordResetToken }, password);
+    await userService.removePasswordResetToken(id);
   } catch (err) {
     throw err;
   }
@@ -96,4 +97,5 @@ module.exports = {
   resetPassword,
   sendVerificationEmail,
   verifyEmail,
+  validateUserPassword,
 };

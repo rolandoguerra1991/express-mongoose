@@ -39,9 +39,25 @@ const generateHashedPassword = async (password) => {
   }
 };
 
-const removeToken = async (id) => {
+const removeAuthToken = async (id) => {
   try {
     await User.findByIdAndUpdate(id, { authToken: null });
+  } catch (err) {
+    throw err;
+  }
+};
+
+const removePasswordResetToken = async (id) => {
+  try {
+    await User.findByIdAndUpdate(id, { passwordResetToken: null });
+  } catch (err) {
+    throw err;
+  }
+};
+
+const removeEmailVerificationToken = async (id) => {
+  try {
+    await User.findByIdAndUpdate(id, { emailVerificationToken: null });
   } catch (err) {
     throw err;
   }
@@ -50,7 +66,7 @@ const removeToken = async (id) => {
 const changePassword = async (query, password) => {
   try {
     const hashedPassword = await generateHashedPassword(password);
-    await updateUser(query, { password: hashedPassword, passwordResetToken: null });
+    await updateUser(query, { password: hashedPassword });
   } catch (err) {
     throw err;
   }
@@ -98,9 +114,11 @@ module.exports = {
   createUser,
   findUser,
   updateUser,
-  removeToken,
+  removeAuthToken,
   changePassword,
   query,
   deleteUser,
   findUserById,
+  removePasswordResetToken,
+  removeEmailVerificationToken,
 };
