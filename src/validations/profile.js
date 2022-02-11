@@ -1,35 +1,41 @@
-const { body } = require('express-validator');
+const { body, check } = require('express-validator');
 
-const changePasswordValidation = [
+const updatePasswordValidation = [
   body('currentPassword')
-    .isEmpty()
-    .withMessage('Current password is required'),
+    .notEmpty()
+    .withMessage('Current password is required')
+    .bail(),
   body('newPassword')
-    .isEmpty()
+    .notEmpty()
     .withMessage('New password is required'),
 ];
 
 const updateProfileValidation = [
   body('name')
-    .isEmpty()
-    .withMessage('Name is required'),
+    .notEmpty()
+    .withMessage('Name is required')
+    .bail(),
   body('email')
-    .isEmpty()
+    .notEmpty()
     .withMessage('Email is required')
+    .bail()
     .isEmail()
-    .withMessage('Email is invalid'),
+    .withMessage('Email is invalid')
+    .bail(),
 ];
 
 const updateProfileImageValidation = [
-  body('profileImage')
-    .isEmpty()
+  check('profileImage')
+    .notEmpty()
     .withMessage('Profile image is required')
+    .bail()
     .isMimeType('image/jpeg')
-    .withMessage('Profile image must be a jpeg image'),
+    .withMessage('Profile image must be a jpeg image')
+    .bail(),
 ];
 
 module.exports = {
-  changePasswordValidation,
+  updatePasswordValidation,
   updateProfileValidation,
   updateProfileImageValidation
 }

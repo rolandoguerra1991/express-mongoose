@@ -8,14 +8,14 @@ const { authenticated } = require('../middlewares');
 const { updatePassword, updateProfile, updateProfileImage } = require('../controllers/profileController');
 
 const {
-  changePasswordValidation,
+  updatePasswordValidation,
   updateProfileValidation,
   updateProfileImageValidation,
 } = require('../validations/profile');
 
 router.use(authenticated);
 
-router.post('/update-password', [changePasswordValidation], updatePassword);
+router.post('/update-password', [updatePasswordValidation], updatePassword);
 router.post('/update-profile', [updateProfileValidation], updateProfile);
 router.post(
   '/update-profile-image',
