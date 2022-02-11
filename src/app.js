@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cors({ origin: config.get('cors.origin') }));
 app.use(compression());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 // Router
 app.use('/api/v1/', router);
