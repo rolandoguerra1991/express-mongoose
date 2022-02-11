@@ -20,7 +20,16 @@ const updateProfileValidation = [
     .withMessage('Email is invalid'),
 ];
 
+const updateProfileImageValidation = [
+  body('profileImage')
+    .isEmpty()
+    .withMessage('Profile image is required')
+    .isMimeType('image/jpeg')
+    .withMessage('Profile image must be a jpeg image'),
+];
+
 module.exports = {
   changePasswordValidation,
-  updateProfileValidation
+  updateProfileValidation,
+  updateProfileImageValidation
 }
