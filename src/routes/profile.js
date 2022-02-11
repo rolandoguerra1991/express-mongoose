@@ -11,6 +11,8 @@ router.use(authenticated);
 
 router.post('/update-password', updatePassword);
 router.post('/update-profile', updateProfile);
-router.post('/update-profile-image', [uploadFile.single('profileImage')], updateProfileImage);
+router.post('/update-profile-image', [
+  uploadFile('profile').single('profileImage')
+], updateProfileImage);
 
 module.exports = router;

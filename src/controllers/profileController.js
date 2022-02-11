@@ -13,8 +13,8 @@ const updatePassword = catchRequest(async (req, resp) => {
 
 const updateProfileImage = catchRequest(async (req, resp) => {
   const { id } = req.user;
-  const { profileImage } = req.file;
-  await userService.updateUser({ _id: id }, { profileImage: profileImage.path });
+  const profileImage = req.file;
+  await userService.updateUser({ _id: id }, { profileImage: profileImage.originalname });
 
   resp.json({ message: 'Profile image updated successfully' });
 });
