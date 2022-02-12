@@ -6,14 +6,19 @@ const loginValidation = [
   body('email')
     .isEmail()
     .withMessage('Email is invalid')
+    .bail()
     .notEmpty()
     .withMessage('Email is required')
-    .custom(alreadyLoggedIn),
+    .bail()
+    .custom(alreadyLoggedIn)
+    .bail(),
   body('password')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long')
+    .bail()
     .notEmpty()
-    .withMessage('Password is required'),
+    .withMessage('Password is required')
+    .bail(),
 ];
 
 const registerValidation = [
@@ -43,24 +48,31 @@ const resetPasswordValidation = [
   body('password')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long')
+    .bail()
     .notEmpty()
-    .withMessage('Password is required'),
+    .withMessage('Password is required')
+    .bail(),
   body('token')
     .notEmpty()
     .withMessage('Token is required')
-    .custom(token => validateToken({ passwordResetToken: token })),
+    .bail()
+    .custom(token => validateToken({ passwordResetToken: token }))
+    .bail(),
 ];
 
 const sendVerificationEmailValidation = [
   body('email')
-    .custom(isEmailVerified),
+    .custom(isEmailVerified)
+    .bail(),
   ];
 
 const verifyEmailValidation = [
   body('token')
     .notEmpty()
     .withMessage('Token is required')
-    .custom(token => validateToken({ emailVerificationToken: token })),
+    .bail()
+    .custom(token => validateToken({ emailVerificationToken: token }))
+    .bail(),
 ];
 
 module.exports = {

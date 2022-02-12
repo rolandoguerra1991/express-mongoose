@@ -1,7 +1,6 @@
 const userService = require('./userService');
 const tokenService = require('./tokenService');
 const emailService = require('./emailService');
-
 const bcrypt = require('bcrypt');
 
 const autenticate = async (payload) => {

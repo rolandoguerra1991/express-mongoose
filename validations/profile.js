@@ -7,7 +7,8 @@ const updatePasswordValidation = [
     .bail(),
   body('newPassword')
     .notEmpty()
-    .withMessage('New password is required'),
+    .withMessage('New password is required')
+    .bail(),
 ];
 
 const updateProfileValidation = [
@@ -24,18 +25,7 @@ const updateProfileValidation = [
     .bail(),
 ];
 
-const updateProfileImageValidation = [
-  check('profileImage')
-    .notEmpty()
-    .withMessage('Profile image is required')
-    .bail()
-    .isMimeType('image/jpeg')
-    .withMessage('Profile image must be a jpeg image')
-    .bail(),
-];
-
 module.exports = {
   updatePasswordValidation,
   updateProfileValidation,
-  updateProfileImageValidation
 }

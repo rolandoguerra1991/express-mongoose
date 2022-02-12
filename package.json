@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Expressjs and Mongoose boilerplate",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon ./bin/www",
-    "prod": "cross-env NODE_ENV=production node ./bin/www"
+    "dev": "cross-env NODE_ENV=development nodemon ./server",
+    "prod": "cross-env NODE_ENV=production node ./server"
   },
   "keywords": [],
   "author": "Rolando Guerra",

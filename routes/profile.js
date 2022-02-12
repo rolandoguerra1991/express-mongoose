@@ -10,7 +10,6 @@ const { updatePassword, updateProfile, updateProfileImage } = require('../contro
 const {
   updatePasswordValidation,
   updateProfileValidation,
-  updateProfileImageValidation,
 } = require('../validations/profile');
 
 router.use(authenticated);
@@ -19,7 +18,7 @@ router.post('/update-password', [updatePasswordValidation], updatePassword);
 router.post('/update-profile', [updateProfileValidation], updateProfile);
 router.post(
   '/update-profile-image',
-  [updateProfileImageValidation, uploadFile('profile-images').single('profileImage')],
+  [uploadFile('profile-images').single('profileImage')],
   updateProfileImage
 );
 
