@@ -1,10 +1,9 @@
 {
   "name": "express-mongoose",
   "version": "1.0.0",
-  "description": "Expressjs and Mongoose boilerplate",
+  "description": "Express JS and Mongoose boilerplate",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon ./server",
-    "prod": "cross-env NODE_ENV=production node ./server"
+    "start": "nodemon ./server"
   },
   "keywords": [],
   "author": "Rolando Guerra",
@@ -27,8 +26,5 @@
     "nodemailer": "^6.7.2",
     "nodemailer-express-handlebars": "^4.0.0",
     "nodemon": "^2.0.15"
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.3"
   }
 }

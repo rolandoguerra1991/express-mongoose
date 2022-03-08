@@ -9,7 +9,7 @@ const authenticated = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: 'Invalid token' });
     }
-    await tokenService.veryfyToken(token, (err, user) => {
+    await tokenService.verifyToken(token, (err, user) => {
       if (err) {
         return res.status(403).json({ message: err });
       }

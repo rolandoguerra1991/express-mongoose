@@ -3,7 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 
-// Dyanmic Routing
+// Dynamic Routing
 // Adds all routes from routes folder
 fs.readdir(path.join(__dirname, '../routes/'), (err, files) => {
   files.forEach((file) => {

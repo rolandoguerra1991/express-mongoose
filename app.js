@@ -1,6 +1,6 @@
 // Import modules
 // process.env["NODE_CONFIG_DIR"] = __dirname + "/config/";
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const datBaseConnection = require('./utils/database');
@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cors({ origin: config.get('cors.origin') }));
 app.use(compression());
-app.use(express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(path.join(__dirname, './public')));
 
 // Router
 app.use('/api/v1/', router);

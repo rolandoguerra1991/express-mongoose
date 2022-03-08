@@ -3,7 +3,7 @@ const tokenService = require('./tokenService');
 const emailService = require('./emailService');
 const bcrypt = require('bcrypt');
 
-const autenticate = async (payload) => {
+const authenticate = async (payload) => {
   try {
     const { email, password } = payload;
     const user = await userService.findUser({ email });
@@ -89,7 +89,7 @@ const verifyEmail = async (token) => {
 };
 
 module.exports = {
-  autenticate,
+  authenticate,
   register,
   logout,
   sendResetPasswordEmail,

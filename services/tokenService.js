@@ -10,11 +10,11 @@ const generateToken = async (payload) => {
   }
 };
 
-const veryfyToken = async (token, callback) => {
+const verifyToken = async (token, callback) => {
   jwt.verify(token, config.get('jsonwebtoken.secret'), callback);
 };
 
 module.exports = {
   generateToken,
-  veryfyToken,
+  verifyToken,
 };
