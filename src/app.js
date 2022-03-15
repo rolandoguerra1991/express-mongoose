@@ -1,5 +1,5 @@
 // Import modules
-// process.env["NODE_CONFIG_DIR"] = __dirname + "/config/";
+process.env["NODE_CONFIG_DIR"] = __dirname + "/config/";
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 app.use(cors({ origin: config.get('cors.origin') }));
 app.use(compression());
-app.use(express.static(path.join(__dirname, './public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Router
 app.use('/api/v1/', router);
