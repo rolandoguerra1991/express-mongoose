@@ -4,7 +4,8 @@
   "description": "Express JS and Mongoose boilerplate",
   "scripts": {
     "dev": "nodemon ./bin/createServer.js",
-    "lint-fix": "eslint src --fix --cache"
+    "lint-fix": "eslint src --fix --cache",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "Rolando Guerra",
@@ -33,6 +34,9 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
-    "nodemon": "^2.0.15"
+    "husky": "^7.0.0",
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.2"
   }
 }
