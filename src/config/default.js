@@ -4,7 +4,7 @@ module.exports = {
     frontend: process.env.FRONTEND_URL,
   },
   database: {
-    connectionString: process.env.DATABASE_CONNECTION_STRING,
+    connectionString: process.env.MONGO_URL,
   },
   cors: {
     origin: process.env.CORS_ORIGIN,

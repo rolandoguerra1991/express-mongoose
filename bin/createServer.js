@@ -4,8 +4,9 @@
  * Module dependencies.
  */
 
-const app = require('./src/app');
+const app = require('../src/app');
 const http = require('http');
+const mongoose = require('mongoose');
 const config = require('config');
 
 /**
@@ -55,6 +56,19 @@ const onListening = () => {
   console.log('Listening on ' + bind);
 }
 
+// Database connection
+const datBaseConnection = () => {
+  mongoose
+    .connect(config.get('database.connectionString'))
+    .then(() => {
+      console.log('Connected to database');
+    })
+    .catch((err) => {
+      console.log('Error connecting to database: ', err);
+    });
+};
+
+
 /**
  * Create HTTP server.
  */
@@ -68,3 +82,4 @@ const onListening = () => {
  server.listen(port);
  server.on('error', onError);
  server.on('listening', onListening);
+ server.on('listening', datBaseConnection);
