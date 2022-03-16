@@ -1,5 +1,5 @@
-const { body, param } = require('express-validator');
-const { emailIsTaken, validateID } = require('./custom');
+const { body, param } = require('express-validator')
+const { emailIsTaken, validateID } = require('./custom')
 
 const createUserValidate = [
   body('password')
@@ -21,8 +21,8 @@ const createUserValidate = [
     .withMessage('Email is required')
     .bail()
     .custom(emailIsTaken)
-    .bail(),
-];
+    .bail()
+]
 
 const updateUserValidate = [
   param('id')
@@ -48,8 +48,8 @@ const updateUserValidate = [
     .bail()
     .notEmpty()
     .withMessage('Email is required')
-    .bail(),
-];
+    .bail()
+]
 
 const deleteUserValidate = [
   param('id')
@@ -57,11 +57,11 @@ const deleteUserValidate = [
     .withMessage('ID is required')
     .bail()
     .custom(validateID)
-    .bail(),
-];
+    .bail()
+]
 
 module.exports = {
   createUserValidate,
   updateUserValidate,
-  deleteUserValidate,
-};
+  deleteUserValidate
+}

@@ -1,16 +1,16 @@
-const config = require('config');
+const config = require('config')
 
 const checkAbilities = (ability) => async (req, res, next) => {
-  const rules = config.get('authorization');
-  const userAbilities = rules.find((rule) => rule.role === req.user.role).abilities;
-  const haveAbility = userAbilities.includes(ability);
+  const rules = config.get('authorization')
+  const userAbilities = rules.find((rule) => rule.role === req.user.role).abilities
+  const haveAbility = userAbilities.includes(ability)
 
   if (!haveAbility && !userAbilities.includes('*')) {
     return res.status(403).json({
-      error: 'You are not authorized to perform this action',
-    });
+      error: 'You are not authorized to perform this action'
+    })
   }
-  next();
-};
+  next()
+}
 
-module.exports = checkAbilities;
+module.exports = checkAbilities

@@ -1,58 +1,58 @@
-const { model, Schema } = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2');
+const { model, Schema } = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
 const userSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: true
     },
     email: {
       type: String,
       required: true,
-      unique: true,
+      unique: true
     },
     role: {
       type: String,
       default: 'user',
-      enum: ['user', 'admin'],
+      enum: ['user', 'admin']
     },
     password: {
       type: String,
-      required: true,
+      required: true
     },
     authToken: {
       type: String,
-      required: false,
+      required: false
     },
     passwordResetToken: {
       type: String,
-      required: false,
+      required: false
     },
     emailVerificationToken: {
       type: String,
-      required: false,
+      required: false
     },
     emailVerified: {
       type: Boolean,
-      required: false,
+      required: false
     },
     profileImage: {
       type: String,
-      required: false,
+      required: false
     }
   },
   {
     timestamps: true,
     toJSON: {
-      transform(doc, ret) {
-        delete ret.password;
-        delete ret.__v;
-      },
-    },
+      transform (doc, ret) {
+        delete ret.password
+        delete ret.__v
+      }
+    }
   }
-);
+)
 
-userSchema.plugin(mongoosePaginate);
+userSchema.plugin(mongoosePaginate)
 
-module.exports = model('User', userSchema);
+module.exports = model('User', userSchema)

@@ -1,114 +1,70 @@
-const User = require('../models/user');
-const bcrypt = require('bcrypt');
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
 
 const createUser = async (payload) => {
-  try {
-    const { name, email, password } = payload;
-    const hashedPassword = await generateHashedPassword(password);
-    const user = await User.create({ name, email, password: hashedPassword });
-    return user;
-  } catch (err) {
-    throw err;
-  }
-};
+  const { name, email, password } = payload
+  const hashedPassword = await generateHashedPassword(password)
+  const user = await User.create({ name, email, password: hashedPassword })
+  return user
+}
 
 const findUser = async (query) => {
-  try {
-    const user = await User.findOne(query).exec();
-    return user;
-  } catch (err) {
-    throw err;
-  }
-};
+  const user = await User.findOne(query).exec()
+  return user
+}
 
 const updateUser = async (query, update) => {
-  try {
-    const user = await User.findOneAndUpdate(query, update);
-    return user;
-  } catch (err) {
-    throw err;
-  }
-};
+  const user = await User.findOneAndUpdate(query, update)
+  return user
+}
 
 const generateHashedPassword = async (password) => {
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    return hashedPassword;
-  } catch (err) {
-    throw err;
-  }
-};
+  const hashedPassword = await bcrypt.hash(password, 10)
+  return hashedPassword
+}
 
 const removeAuthToken = async (id) => {
-  try {
-    await User.findByIdAndUpdate(id, { authToken: null });
-  } catch (err) {
-    throw err;
-  }
-};
+  await User.findByIdAndUpdate(id, { authToken: null })
+}
 
 const removePasswordResetToken = async (id) => {
-  try {
-    await User.findByIdAndUpdate(id, { passwordResetToken: null });
-  } catch (err) {
-    throw err;
-  }
-};
+  await User.findByIdAndUpdate(id, { passwordResetToken: null })
+}
 
 const removeEmailVerificationToken = async (id) => {
-  try {
-    await User.findByIdAndUpdate(id, { emailVerificationToken: null });
-  } catch (err) {
-    throw err;
-  }
-};
+  await User.findByIdAndUpdate(id, { emailVerificationToken: null })
+}
 
 const changePassword = async (query, password) => {
-  try {
-    const hashedPassword = await generateHashedPassword(password);
-    await updateUser(query, { password: hashedPassword });
-  } catch (err) {
-    throw err;
-  }
-};
+  const hashedPassword = await generateHashedPassword(password)
+  await updateUser(query, { password: hashedPassword })
+}
 
 const query = async (payload) => {
-  try {
-    const { name, email, page = 1, limit = 5 } = payload;
-    const query = {};
-    if (name) {
-      query.name = { $regex: name, $options: 'i' };
-    }
-    if (email) {
-      query.email = { $regex: email, $options: 'i' };
-    }
-    const user = await User.paginate(query, { page, limit });
-    return user;
-  } catch (err) {
-    throw err;
+  const { name, email, page = 1, limit = 5 } = payload
+  const query = {}
+  if (name) {
+    query.name = { $regex: name, $options: 'i' }
   }
-};
+  if (email) {
+    query.email = { $regex: email, $options: 'i' }
+  }
+  const user = await User.paginate(query, { page, limit })
+  return user
+}
 
 const deleteUser = async (payload) => {
-  try {
-    const { _id, authUserId } = payload;
-    if (_id === authUserId) {
-      throw 'You cannot delete yourself';
-    }
-    await User.findOneAndDelete({ _id });
-  } catch (err) {
-    throw err;
+  const { _id, authUserId } = payload
+  if (_id === authUserId) {
+    return new Error('You cannot delete yourself')
   }
-};
+  await User.findOneAndDelete({ _id })
+}
 
 const findUserById = async (id) => {
-  try {
-    const user = await User.findById(id).exec();
-    return user;
-  } catch (err) {
-    throw err;
-  }
-};
+  const user = await User.findById(id).exec()
+  return user
+}
 
 module.exports = {
   createUser,
@@ -120,5 +76,5 @@ module.exports = {
   deleteUser,
   findUserById,
   removePasswordResetToken,
-  removeEmailVerificationToken,
-};
+  removeEmailVerificationToken
+}

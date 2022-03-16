@@ -1,4 +1,4 @@
-const { body, check } = require('express-validator');
+const { body } = require('express-validator')
 
 const updatePasswordValidation = [
   body('currentPassword')
@@ -8,8 +8,8 @@ const updatePasswordValidation = [
   body('newPassword')
     .notEmpty()
     .withMessage('New password is required')
-    .bail(),
-];
+    .bail()
+]
 
 const updateProfileValidation = [
   body('name')
@@ -22,10 +22,10 @@ const updateProfileValidation = [
     .bail()
     .isEmail()
     .withMessage('Email is invalid')
-    .bail(),
-];
+    .bail()
+]
 
 module.exports = {
   updatePasswordValidation,
-  updateProfileValidation,
+  updateProfileValidation
 }

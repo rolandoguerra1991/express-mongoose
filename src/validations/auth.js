@@ -1,6 +1,6 @@
-const { body } = require('express-validator');
+const { body } = require('express-validator')
 
-const { emailIsTaken, isEmailVerified, alreadyLoggedIn, validateToken } = require('./custom');
+const { emailIsTaken, isEmailVerified, alreadyLoggedIn, validateToken } = require('./custom')
 
 const loginValidation = [
   body('email')
@@ -18,8 +18,8 @@ const loginValidation = [
     .bail()
     .notEmpty()
     .withMessage('Password is required')
-    .bail(),
-];
+    .bail()
+]
 
 const registerValidation = [
   body('name')
@@ -41,8 +41,8 @@ const registerValidation = [
     .bail()
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long')
-    .bail(),
-];
+    .bail()
+]
 
 const resetPasswordValidation = [
   body('password')
@@ -57,14 +57,14 @@ const resetPasswordValidation = [
     .withMessage('Token is required')
     .bail()
     .custom(token => validateToken({ passwordResetToken: token }))
-    .bail(),
-];
+    .bail()
+]
 
 const sendVerificationEmailValidation = [
   body('email')
     .custom(isEmailVerified)
-    .bail(),
-  ];
+    .bail()
+]
 
 const verifyEmailValidation = [
   body('token')
@@ -72,13 +72,13 @@ const verifyEmailValidation = [
     .withMessage('Token is required')
     .bail()
     .custom(token => validateToken({ emailVerificationToken: token }))
-    .bail(),
-];
+    .bail()
+]
 
 module.exports = {
   loginValidation,
   registerValidation,
   resetPasswordValidation,
   sendVerificationEmailValidation,
-  verifyEmailValidation,
-};
+  verifyEmailValidation
+}
