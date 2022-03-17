@@ -14,12 +14,8 @@ const {
 
 router.use(authenticated)
 
-router.post('/update-password', [updatePasswordValidation], updatePassword)
-router.post('/update-profile', [updateProfileValidation], updateProfile)
-router.post(
-  '/update-profile-image',
-  [uploadFile('profile-images').single('profileImage')],
-  updateProfileImage
-)
+router.post('/update-password', updatePasswordValidation, updatePassword)
+router.post('/update-profile', updateProfileValidation, updateProfile)
+router.post('/update-profile-image', uploadFile('profile-images').single('profileImage'), updateProfileImage)
 
 module.exports = router

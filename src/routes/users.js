@@ -8,9 +8,9 @@ const { createUserValidate, updateUserValidate, deleteUserValidate } = require('
 router.use(authenticated, checkRole('admin'))
 
 router.get('/', list)
-router.post('/', [createUserValidate], create)
-router.put('/:id', [updateUserValidate], update)
+router.post('/', createUserValidate, create)
+router.put('/:id', updateUserValidate, update)
 router.get('/:id', read)
-router.delete('/:id', [deleteUserValidate], destroy)
+router.delete('/:id', deleteUserValidate, destroy)
 
 module.exports = router
