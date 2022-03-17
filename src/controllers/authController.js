@@ -2,11 +2,11 @@ const { authService } = require('../services')
 const catchRequest = require('../utils/catchRequest')
 
 const login = catchRequest(async (req, res) => {
-  const { user, token } = await authService.authenticate(req.body)
+  const { user, authToken } = await authService.authenticate(req.body)
   res.json({
     message: 'User logged in successfully',
     user,
-    token
+    authToken
   })
 })
 
