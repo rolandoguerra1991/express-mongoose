@@ -7,13 +7,13 @@
 const app = require('../src/app')
 const http = require('http')
 const mongoose = require('mongoose')
-const config = require('config')
+const config = require('../src/utils/config')
 
 /**
  * Get port from environment and store in Express.
  */
 
-const port = config.get('app.port')
+const port = config.get('server.port')
 app.set('port', port)
 
 /**

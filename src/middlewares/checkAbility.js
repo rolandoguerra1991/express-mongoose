@@ -1,4 +1,4 @@
-const config = require('config')
+const config = require('../utils/config')
 
 const checkAbilities = (ability) => async (req, res, next) => {
   const rules = config.get('authorization')
