@@ -1,10 +1,16 @@
 const multer = require('multer')
 const path = require('path')
+const fs = require('fs')
+const config = require('./config')
 
-const upload = (folder) => {
+const uploadFile = (folder) => {
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, path.join(__dirname, `../../uploads/${folder}/`))
+      const dir = path.join(__dirname, `../../public/storage/${folder}/`)
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir)
+      }
+      cb(null, dir)
     },
     filename: (req, file, cb) => {
       const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`
@@ -15,4 +21,9 @@ const upload = (folder) => {
   return multer({ storage })
 }
 
-module.exports = upload
+const getFileUrl = async (folder, filename) => {
+  const host = config.get('server.host')
+  return `${host}/storage/${folder}/${filename}`
+}
+
+module.exports = { uploadFile, getFileUrl }

@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const uploadFile = require('../utils/uploadFile')
+const { uploadFile } = require('../utils/uploadFile')
 
 const { authenticated } = require('../middlewares')
 

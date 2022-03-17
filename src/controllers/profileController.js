@@ -1,5 +1,6 @@
 const catchRequest = require('../utils/catchRequest')
 const { userService, authService } = require('../services')
+const { getFileUrl } = require('../utils/uploadFile')
 
 const updatePassword = catchRequest(async (req, res) => {
   const { id } = req.user
@@ -14,7 +15,8 @@ const updatePassword = catchRequest(async (req, res) => {
 const updateProfileImage = catchRequest(async (req, res) => {
   const { id } = req.user
   const profileImage = req.file
-  await userService.updateUser({ _id: id }, { profileImage: profileImage.originalname })
+  const imageUrl = await getFileUrl('profile-images', profileImage.filename)
+  await userService.updateUser({ _id: id }, { profileImage: imageUrl })
 
   res.json({ message: 'Profile image updated successfully' })
 })
