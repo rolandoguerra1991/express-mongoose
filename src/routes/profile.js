@@ -10,6 +10,7 @@ const { updatePassword, updateProfile, updateProfileImage } = require('../contro
 const {
   updatePasswordValidation,
   updateProfileValidation
+
 } = require('../validations/profile')
 
 router.use(authenticated)

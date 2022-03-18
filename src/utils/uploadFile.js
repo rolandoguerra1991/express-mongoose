@@ -5,14 +5,14 @@ const config = require('./config')
 
 const uploadFile = (folder) => {
   const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
+    destination: (_req, _file, cb) => {
       const dir = path.join(__dirname, `../../public/storage/${folder}/`)
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir)
       }
       cb(null, dir)
     },
-    filename: (req, file, cb) => {
+    filename: (_req, file, cb) => {
       const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`
       const extension = file.originalname.split('.').pop()
       cb(null, `${uniqueSuffix}.${extension}`)
